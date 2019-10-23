@@ -1,4 +1,4 @@
-package net.fabricmc.example
+package fe
 
 
 @Suppress("unused")

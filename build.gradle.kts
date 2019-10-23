@@ -1,21 +1,9 @@
 import com.matthewprenger.cursegradle.CurseArtifact
 import com.matthewprenger.cursegradle.CurseProject
 import com.matthewprenger.cursegradle.Options
-import com.wynprice.cursemaven.CurseMavenResolver
 import net.fabricmc.loom.task.RemapJarTask
 import net.fabricmc.loom.task.RemapSourcesJarTask
-import org.jetbrains.kotlin.fir.resolve.calls.TowerScopeLevel
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.*
-import java.io.*
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven(url = "https://maven.fabricmc.net/")
-    }
-
-}
 
 plugins {
     id("fabric-loom")
@@ -25,6 +13,7 @@ plugins {
     id("com.wynprice.cursemaven") version "1.2.2"
     id("com.matthewprenger.cursegradle") version "1.4.0"
 }
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,7 +29,7 @@ val standalone: String by project
 
 val isStandalone: Boolean = !project.hasProperty("standalone") || standalone == "true"
 
-fun prop(name : String) = project.property(name)
+fun prop(name: String) = project.property(name)
 
 base {
     archivesBaseName = archives_base_name
@@ -53,6 +42,7 @@ minecraft {
 }
 
 repositories {
+    mavenLocal()
     maven(url = "http://maven.fabricmc.net/")
     maven(url = "https://kotlin.bintray.com/kotlinx")
     maven(url = "https://mod-buildcraft.com/maven")
@@ -72,7 +62,7 @@ dependencies {
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
-        exclude(group = "io.github.prospector.modmenu")
+        exclude(group = "io.github.prospector")
     }
     devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
     devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
@@ -80,19 +70,26 @@ dependencies {
 
 }
 
+
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
-    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
-    modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
+//    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
+    mappings("net.fabricmc:yarn-unmerged:1.14.4+build.local:v2")
+    modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}"){
+        this.isForce = true
+    }
+    modImplementation("net.fabricmc:tiny-mappings-parser:0.2.0"){
+        isForce = true
+    }
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }
 
 fun String.runCommand(logFile: String/*workingDir: File*/) {
     ProcessBuilder(*split(" ").toTypedArray())
-            .redirectOutput(ProcessBuilder.Redirect.to(File(logFile)))
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
-            .start()
-            .waitFor(300, TimeUnit.SECONDS)
+        .redirectOutput(ProcessBuilder.Redirect.to(File(logFile)))
+        .redirectError(ProcessBuilder.Redirect.INHERIT)
+        .start()
+        .waitFor(300, TimeUnit.SECONDS)
 }
 
 tasks.register("publishVariants") {
@@ -106,7 +103,10 @@ tasks.register("publishVariants") {
 
 
 
-fun DependencyHandlerScope.modDependency(dep: String, dependencyConfiguration: Action<ExternalModuleDependency> = Action {}) {
+fun DependencyHandlerScope.modDependency(
+    dep: String,
+    dependencyConfiguration: Action<ExternalModuleDependency> = Action {}
+) {
     modImplementation(dep) {
         exclude(group = "net.fabricmc.fabric-api")
         dependencyConfiguration.execute(this)
@@ -115,7 +115,10 @@ fun DependencyHandlerScope.modDependency(dep: String, dependencyConfiguration: A
     if (isStandalone) include(dep)
 }
 
-fun DependencyHandlerScope.devEnvMod(dep: String, dependencyConfiguration: Action<ExternalModuleDependency> = Action {}) {
+fun DependencyHandlerScope.devEnvMod(
+    dep: String,
+    dependencyConfiguration: Action<ExternalModuleDependency> = Action {}
+) {
     modRuntime(dep) {
         exclude(group = "net.fabricmc.fabric-api")
         dependencyConfiguration.execute(this)
@@ -129,9 +132,9 @@ fun DependencyHandlerScope.devEnvMod(dep: Dependency) {
 tasks.getByName<ProcessResources>("processResources") {
     filesMatching("fabric.mod.json") {
         expand(
-                mutableMapOf(
-                        "version" to mod_version
-                )
+            mutableMapOf(
+                "version" to mod_version
+            )
         )
     }
 }

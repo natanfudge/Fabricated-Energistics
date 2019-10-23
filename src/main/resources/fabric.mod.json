@@ -1,36 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "fabricated-energistics",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Fabricated Energistics",
+  "description": "Big storage",
   "authors": [
-    "Me!"
+    "Fudge"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/natanfudge/Fabricated-Energistics",
+    "sources": "https://github.com/natanfudge/Fabricated-Energistics"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
-
+  "license": "The MIT License",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "fe.ExampleModKt::init"
     ]
   },
-  "mixins": [
-    "modid.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.4.0",
-    "fabric": "*",
-    "fabric-language-kotlin": "*"
-  },
-  "suggests": {
-    "flamingo": "*"
+    "fabric-language-kotlin": "*",
+    "minecraft": "1.14.x"
   }
 }
