@@ -5,6 +5,7 @@ import net.fabricmc.loom.task.RemapJarTask
 import net.fabricmc.loom.task.RemapSourcesJarTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 plugins {
     id("fabric-loom")
     `maven-publish`
@@ -12,7 +13,12 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.wynprice.cursemaven") version "1.2.2"
     id("com.matthewprenger.cursegradle") version "1.4.0"
+//    id("com.android.application") version "4.0.0-alpha01"
+//    id("kotlin-android") version "1.3.50"
 }
+
+//apply(plugin = "com.android.application")
+//apply(plugin = "kotlin-android")
 
 
 java {
@@ -43,23 +49,34 @@ minecraft {
 
 repositories {
     mavenLocal()
+    jcenter()
+//    google()
+    flatDir{
+        dirs ("libs")
+    }
     maven(url = "http://maven.fabricmc.net/")
     maven(url = "https://kotlin.bintray.com/kotlinx")
-    maven(url = "https://mod-buildcraft.com/maven")
     maven(url = "https://minecraft.curseforge.com/api/maven")
     maven(url = "http://tehnut.info/maven")
     maven(url = "https://maven.jamieswhiteshirt.com/libs-release/")
-    jcenter()
+    maven(url = "http://server.bbkr.space:8081/artifactory/libs-release/")
+
 
 }
 
+val compose_version = "0.1.0-dev02"
 
 dependencies {
 
     fabric()
+    implementation ("androidx.compose:compose-runtime")
+
 
     modDependency("net.fabricmc:fabric-language-kotlin:${prop("fabric_kotlin_version")}")
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
+    modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
+//    compile ("androidx.compose:compose-runtime:$compose_version")
+//    compile ("androidx.compose:compose-runtime:$compose_version")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
         exclude(group = "io.github.prospector")
@@ -70,17 +87,24 @@ dependencies {
 
 }
 
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "net.fabricmc") {
+                if(requested.name =="tiny-mappings-parser"){
+                    useVersion("0.2.0")
+                }
+
+            }
+        }
+    }
+}
 
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
 //    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
     mappings("net.fabricmc:yarn-unmerged:1.14.4+build.local:v2")
-    modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}"){
-        this.isForce = true
-    }
-    modImplementation("net.fabricmc:tiny-mappings-parser:0.2.0"){
-        isForce = true
-    }
+    modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }
 

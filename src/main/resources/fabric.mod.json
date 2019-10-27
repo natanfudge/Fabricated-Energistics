@@ -12,7 +12,9 @@
     "homepage": "https://github.com/natanfudge/Fabricated-Energistics",
     "sources": "https://github.com/natanfudge/Fabricated-Energistics"
   },
-
+  "mixins":[
+    "fabricated-energistics.mixins.json"
+  ],
   "license": "The MIT License",
   "environment": "*",
   "entrypoints": {
