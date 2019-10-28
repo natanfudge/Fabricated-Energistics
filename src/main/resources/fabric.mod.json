@@ -19,7 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "fe.ExampleModKt::init"
+      "fe.FabricatedEnergisticsKt::init"
+    ],
+    "client": [
+      "fe.FabricatedEnergisticsKt::initClient"
     ]
   },
   "depends": {

@@ -1,4 +1,4 @@
-package spatialcrafting.util
+package fe.util
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer

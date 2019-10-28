@@ -13,12 +13,10 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.wynprice.cursemaven") version "1.2.2"
     id("com.matthewprenger.cursegradle") version "1.4.0"
-//    id("com.android.application") version "4.0.0-alpha01"
-//    id("kotlin-android") version "1.3.50"
+
 }
 
-//apply(plugin = "com.android.application")
-//apply(plugin = "kotlin-android")
+
 
 
 java {
@@ -50,7 +48,7 @@ minecraft {
 repositories {
     mavenLocal()
     jcenter()
-//    google()
+    google()
     flatDir{
         dirs ("libs")
     }
@@ -238,7 +236,7 @@ curseforge {
 }
 
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses", "-Xuse-experimental=kotlin.Experimental")
+
+tasks.withType<KotlinCompile>().all {
     kotlinOptions.jvmTarget = "1.8"
 }

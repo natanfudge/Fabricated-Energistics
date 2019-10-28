@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package spatialcrafting.util
+package fe.util
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -31,7 +31,7 @@ import kotlin.math.sqrt
 val BlockPos.xz get() = "($x,$z)"
 
 fun BlockPos.distanceFrom(otherPos: Vec3d) =
-        sqrt((otherPos.x - this.x).squared() + (otherPos.y - this.y).squared() + (otherPos.z - this.z).squared())
+    sqrt((otherPos.x - this.x).squared() + (otherPos.y - this.y).squared() + (otherPos.z - this.z).squared())
 
 operator fun BlockPos.plus(other: BlockPos): BlockPos = this.add(other)
 operator fun BlockPos.plus(vec3d: Vec3d): Vec3d = this.toVec3d() + vec3d
@@ -53,8 +53,14 @@ fun vec3d(x: Double, y: Double, z: Double) = Vec3d(x, y, z)
 operator fun Vec3d.plus(other: Vec3d) = Vec3d(this.x + other.x, this.y + other.y, this.z + other.z)
 operator fun Vec3d.minus(other: Vec3d): Vec3d = this.subtract(other)
 
-fun IWorld.play(soundEvent: SoundEvent, at: BlockPos,
-                ofCategory: SoundCategory, toPlayer: PlayerEntity? = null, volumeMultiplier: Float = 1.0f, pitchMultiplier: Float = 1.0f) {
+fun IWorld.play(
+    soundEvent: SoundEvent,
+    at: BlockPos,
+    ofCategory: SoundCategory,
+    toPlayer: PlayerEntity? = null,
+    volumeMultiplier: Float = 1.0f,
+    pitchMultiplier: Float = 1.0f
+) {
     playSound(toPlayer, at, soundEvent, ofCategory, volumeMultiplier, pitchMultiplier)
 }
 
@@ -63,7 +69,8 @@ const val TicksPerSecond = 20
 
 fun IWorld.getBlock(location: BlockPos): Block = getBlockState(location).block
 
-fun IWorld.setBlock(block: Block, pos: BlockPos, blockState: BlockState = block.defaultState): Boolean = world.setBlockState(pos, blockState)
+fun IWorld.setBlock(block: Block, pos: BlockPos, blockState: BlockState = block.defaultState): Boolean =
+    world.setBlockState(pos, blockState)
 
 val World.isServer get() = !isClient
 
@@ -73,9 +80,9 @@ fun IWorld.dropItemStack(stack: ItemStack, pos: BlockPos): ItemEntity = dropItem
 
 
 fun IWorld.dropItemStack(stack: ItemStack, pos: Vec3d): ItemEntity =
-        ItemEntity(world, pos.x, pos.y, pos.z, stack).also {
-            world.spawnEntity(it)
-        }
+    ItemEntity(world, pos.x, pos.y, pos.z, stack).also {
+        world.spawnEntity(it)
+    }
 
 
 fun ItemStack.copy(count: Int): ItemStack = copy().apply { this.count = count }
@@ -144,7 +151,11 @@ private fun Inventory.canInsert(slot: Int, stack: ItemStack, direction: Directio
     return if (this is SidedInventory) canInsertInvStack(slot, stack, direction) else isValidInvStack(slot, stack)
 }
 
-private fun Inventory.distributeToAvailableSlots(stack: ItemStack, acceptEmptySlots: Boolean, direction: Direction): ItemStack {
+private fun Inventory.distributeToAvailableSlots(
+    stack: ItemStack,
+    acceptEmptySlots: Boolean,
+    direction: Direction
+): ItemStack {
     val maxStackSize = invMaxStackAmount
     var stackCountLeftToDistribute = stack.count
     for (slot in availableSlots(direction)) {
@@ -154,9 +165,12 @@ private fun Inventory.distributeToAvailableSlots(stack: ItemStack, acceptEmptySl
         if ((acceptEmptySlots && stackInSlot.isEmpty) || stackIsNotEmptyAndCanAddMore(stackInSlot, stack)) {
             val amountThatCanFitInSlot = maxStackSize - stackInSlot.count
             if (amountThatCanFitInSlot >= 0) {
-                setInvStack(slot, ItemStack(stack.item,
+                setInvStack(
+                    slot, ItemStack(
+                        stack.item,
                         min(maxStackSize, stackInSlot.count + stackCountLeftToDistribute)
-                ))
+                    )
+                )
                 stackCountLeftToDistribute -= amountThatCanFitInSlot
             }
         }
@@ -167,3 +181,11 @@ private fun Inventory.distributeToAvailableSlots(stack: ItemStack, acceptEmptySl
 
     return stack.copy(count = stackCountLeftToDistribute)
 }
+//
+//inline class Client(val world: World)
+//inline class Server(val world: World)
+//
+//inline fun server(world: World, code: Server.() -> Unit) {
+//    if (world.isServer) Server(world).apply(code)
+//}
+//

@@ -1,4 +1,4 @@
-package spatialcrafting.util
+package fe.util
 
 import com.mojang.blaze3d.platform.GlStateManager
 import net.minecraft.client.MinecraftClient

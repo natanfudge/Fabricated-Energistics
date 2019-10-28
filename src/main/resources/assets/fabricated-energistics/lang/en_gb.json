@@ -1,0 +1,17 @@
+{
+  "": "/ GUI",
+  "gui.fabricated-energistics.inWorldCraftingPresses": "Crafting Presses are found in the centre of meteorites which can be found in around the world, they can be located by using a meteorite compass.",
+
+  "": "/ GUI Tooltips",
+  "gui.tooltips.fabricated-energistics.SearchMode_JEIAuto": "JEI Synchronised Auto",
+  "gui.tooltips.fabricated-energistics.SearchMode_JEIStandard": "JEI Synchronised Standard",
+  "gui.tooltips.fabricated-energistics.TerminalStyle_Tall": "Tall Centered Terminal",
+  "gui.tooltips.fabricated-energistics.TerminalStyle_Small": "Small Centered Terminal",
+
+  "": "/ Colours",
+  "gui.fabricated-energistics.Gray": "Grey",
+  "gui.fabricated-energistics.LightGray": "Light Grey",
+
+  "": "/ Items",
+  "item.fabricated-energistics.color_applicator": "Colour Applicator"
+}

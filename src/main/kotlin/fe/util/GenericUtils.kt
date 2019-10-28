@@ -1,11 +1,9 @@
-package spatialcrafting.util
+package fe.util
 
-import spatialcrafting.recipe.ComponentPosition
 import java.lang.management.ManagementFactory
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
-import kotlin.math.sqrt
 
 
 infix fun IntRange.by(range: IntRange): List<Pair<Int, Int>> = this.flatMap { x -> range.map { y -> Pair(x, y) } }

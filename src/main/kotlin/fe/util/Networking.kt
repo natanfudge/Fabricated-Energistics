@@ -13,8 +13,6 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.PacketByteBuf
 import net.minecraft.world.World
-import spatialcrafting.util.ClientModInitializationContext
-import spatialcrafting.util.CommonModInitializationContext
 import java.util.stream.Stream
 
 

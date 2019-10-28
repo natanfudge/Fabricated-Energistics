@@ -16,8 +16,6 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
-import spatialcrafting.util.ClientBuilders
-import spatialcrafting.util.getMinecraftClient
 import kotlin.math.max
 
 

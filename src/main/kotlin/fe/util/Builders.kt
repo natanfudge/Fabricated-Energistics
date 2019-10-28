@@ -1,4 +1,4 @@
-package spatialcrafting.util
+package fe.util
 
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -10,13 +10,13 @@ import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.block.piston.PistonBehavior
 import net.minecraft.client.sound.*
 import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
 import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolMaterial
 import net.minecraft.recipe.Ingredient
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
 import net.minecraft.util.math.Vec3d
-import spatialcrafting.SpatialCraftingItemGroup
 
 
 object Builders {
@@ -106,7 +106,8 @@ object Builders {
     /**
      * Creates a new sword
      */
-    fun sword(durability: Int, damage: Int, attackSpeed: Float, enchantability: Int, repairMaterial: () -> Ingredient) = SwordItem(ToolMaterialImpl(
+    fun sword(durability: Int, damage: Int, attackSpeed: Float, enchantability: Int, itemGroup: ItemGroup, repairMaterial: () -> Ingredient) = SwordItem(
+        ToolMaterialImpl(
             _miningLevel = 0,
             _durability = durability,
             _miningSpeed = 0f,
@@ -116,7 +117,7 @@ object Builders {
     ),
             damage - 1,
             attackSpeed - 4,
-            Item.Settings().group(SpatialCraftingItemGroup)
+            Item.Settings().group(itemGroup)
     )
 
 

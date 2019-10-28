@@ -1,7 +1,5 @@
-package spatialcrafting.util
+package fe.util
 
-import fe.util.Packet
-import fe.util.registerS2C
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry
@@ -42,8 +40,10 @@ inline fun initClientOnly(modId: String, init: ClientModInitializationContext.()
 }
 
 
-class CommonModInitializationContext(@PublishedApi internal val modId: String,
-                                     @PublishedApi internal val group: ItemGroup?) {
+class CommonModInitializationContext(
+    @PublishedApi internal val modId: String,
+    @PublishedApi internal val group: ItemGroup?
+) {
 
     inline fun <T> registerTo(registry: Registry<T>, init: RegistryContext<T>.() -> Unit) {
         init(RegistryContext(modId, registry))
@@ -68,11 +68,17 @@ class ClientModInitializationContext(@PublishedApi internal val modId: String) {
             ModelVariantProvider { modelId, _ ->
                 if (modelId.namespace == modId && modelId.path == blockPath) {
                     object : UnbakedModel {
-                        override fun bake(modelLoader: ModelLoader, spriteFunction: Function<Identifier, Sprite>, settings: ModelBakeSettings): BakedModel = bakery()
+                        override fun bake(
+                            modelLoader: ModelLoader,
+                            spriteFunction: Function<Identifier, Sprite>,
+                            settings: ModelBakeSettings
+                        ): BakedModel = bakery()
 
                         override fun getModelDependencies(): List<Identifier> = listOf()
-                        override fun getTextureDependencies(unbakedModelFunction: Function<Identifier, UnbakedModel>,
-                                                            strings: MutableSet<String>): List<Identifier> = textures.toList()
+                        override fun getTextureDependencies(
+                            unbakedModelFunction: Function<Identifier, UnbakedModel>,
+                            strings: MutableSet<String>
+                        ): List<Identifier> = textures.toList()
                     }
                 } else null
             }
@@ -87,12 +93,14 @@ class RegistryContext<T>(private val namespace: String, private val registry: Re
 }
 
 class BlockWithItemRegistryContext(private val namespace: String, private val group: ItemGroup?) {
-    infix fun Block.withId(name: String) {
-        Registry.register(Registry.BLOCK, Identifier(namespace, name), this)
+    infix fun Block.withId(name: String) = withId(Identifier(namespace, name))
+
+    infix fun Block.withId(id: Identifier) {
+        Registry.register(Registry.BLOCK, id, this)
         Registry.register(
-                Registry.ITEM,
-                Identifier(namespace, name),
-                BlockItem(this, Item.Settings().group(group ?: ItemGroup.MISC))
+            Registry.ITEM,
+            id,
+            BlockItem(this, Item.Settings().group(group ?: ItemGroup.MISC))
         )
     }
 }
