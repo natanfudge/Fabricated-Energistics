@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "fabricated-energistics:block/quartz_pillar_top",
+        "side": "fabricated-energistics:block/quartz_pillar_side"
+    }
+}

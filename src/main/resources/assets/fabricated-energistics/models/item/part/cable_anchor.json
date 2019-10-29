@@ -1,0 +1,41 @@
+{
+    "parent": "fabricated-energistics:item/part/part",
+    "textures": {
+        "all": "fabricated-energistics:parts/cable_anchor",
+        "particle": "fabricated-energistics:parts/cable_anchor"
+    },
+    "elements": [
+        {
+            "from": [
+                7.0,
+                7.0,
+                5.0
+            ],
+            "to": [
+                9.0,
+                9.0,
+                11.0
+            ],
+            "faces": {
+                "north": {
+                    "texture": "#all"
+                },
+                "east": {
+                    "texture": "#all"
+                },
+                "south": {
+                    "texture": "#all"
+                },
+                "west": {
+                    "texture": "#all"
+                },
+                "up": {
+                    "texture": "#all"
+                },
+                "down": {
+                    "texture": "#all"
+                }
+            }
+        }
+    ]
+}

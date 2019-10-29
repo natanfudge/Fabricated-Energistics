@@ -1,0 +1,60 @@
+{
+    "parent": "fabricated-energistics:item/part/part",
+    "textures": {
+        "sides": "fabricated-energistics:parts/p2p_tunnel_sides",
+        "back": "fabricated-energistics:item/part/p2p_tunnel_back",
+        "front": "fabricated-energistics:item/part/p2p_tunnel_front",
+        "type": "fabricated-energistics:block/quartz_block"
+    },
+    "elements": [
+        {
+            "from": [
+                2,
+                2,
+                7
+            ],
+            "to": [
+                14,
+                14,
+                9
+            ],
+            "faces": {
+                "north": {
+                    "texture": "#type"
+                }
+            }
+        },
+        {
+            "from": [
+                2,
+                2,
+                7
+            ],
+            "to": [
+                14,
+                14,
+                9
+            ],
+            "faces": {
+                "north": {
+                    "texture": "#front"
+                },
+                "south": {
+                    "texture": "#back"
+                },
+                "east": {
+                    "texture": "#sides"
+                },
+                "west": {
+                    "texture": "#sides"
+                },
+                "up": {
+                    "texture": "#sides"
+                },
+                "down": {
+                    "texture": "#sides"
+                }
+            }
+        }
+    ]
+}

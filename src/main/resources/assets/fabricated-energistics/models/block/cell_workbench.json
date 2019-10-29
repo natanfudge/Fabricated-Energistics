@@ -1,0 +1,8 @@
+{
+    "parent": "fabricated-energistics:block/cube/cube_ae_bottom_top",
+    "textures": {
+        "bottom": "fabricated-energistics:block/cell_workbench_bottom",
+        "side": "fabricated-energistics:block/cell_workbench_side",
+        "top": "fabricated-energistics:block/cell_workbench"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:part/p2p/p2p_tunnel_base",
+    "textures": {
+        "type": "blocks/redstone_block"
+    }
+}

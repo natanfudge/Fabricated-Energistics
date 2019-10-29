@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:item/part/cable_smart_base",
+    "textures": {
+        "base": "fabricated-energistics:parts/cable/smart/orange"
+    }
+}

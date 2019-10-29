@@ -1,0 +1,8 @@
+{
+    "parent": "fabricated-energistics:block/cube/cube_ae_bottom_top",
+    "textures": {
+        "bottom": "fabricated-energistics:block/io_port_bottom",
+        "side": "fabricated-energistics:block/io_port_side",
+        "top": "fabricated-energistics:block/io_port"
+    }
+}

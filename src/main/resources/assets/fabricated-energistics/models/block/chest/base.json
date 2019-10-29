@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "fabricated-energistics:block/chest/side",
+        "up": "fabricated-energistics:block/chest/top",
+        "down": "fabricated-energistics:block/chest/bottom",
+        "north": "fabricated-energistics:block/chest/front",
+        "east": "fabricated-energistics:block/chest/side",
+        "south": "fabricated-energistics:block/chest/side",
+        "west": "fabricated-energistics:block/chest/side"
+    }
+}

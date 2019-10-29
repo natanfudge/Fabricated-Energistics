@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:item/part/toggle_bus",
+    "textures": {
+        "bus": "fabricated-energistics:item/part/inverted_toggle_bus"
+    }
+}

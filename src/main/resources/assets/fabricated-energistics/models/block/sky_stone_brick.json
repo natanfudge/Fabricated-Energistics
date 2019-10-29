@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "fabricated-energistics:block/sky_stone_brick"
+    }
+}

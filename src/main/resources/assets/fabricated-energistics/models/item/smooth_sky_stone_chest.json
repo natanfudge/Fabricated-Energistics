@@ -1,0 +1,7 @@
+{
+    "parent": "fabricated-energistics:item/sky_stone_chest",
+    "textures": {
+        "particle": "fabricated-energistics:models/skyblockchest",
+        "0": "fabricated-energistics:models/skyblockchest"
+    }
+}

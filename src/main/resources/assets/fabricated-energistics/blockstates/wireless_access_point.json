@@ -1,0 +1,41 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "fabricated-energistics:wireless_access_point_chassis",
+        "y": 180
+    },
+    "variants": {
+        "state": {
+            "off": {
+                "submodel": {
+                    "state": {
+                        "model": "fabricated-energistics:wireless_access_point_status_off"
+                    },
+                    "torch": {
+                        "model": "fabricated-energistics:wireless_access_point_off"
+                    }
+                }
+            },
+            "on": {
+                "submodel": {
+                    "state": {
+                        "model": "fabricated-energistics:wireless_access_point_status_on"
+                    },
+                    "torch": {
+                        "model": "fabricated-energistics:wireless_access_point_off"
+                    }
+                }
+            },
+            "has_channel": {
+                "submodel": {
+                    "state": {
+                        "model": "fabricated-energistics:wireless_access_point_status_has_channel"
+                    },
+                    "torch": {
+                        "model": "fabricated-energistics:wireless_access_point_on"
+                    }
+                }
+            }
+        }
+    }
+}

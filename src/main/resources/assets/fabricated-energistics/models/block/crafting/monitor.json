@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "fabricated-energistics:block/crafting/monitor",
+        "north": "fabricated-energistics:block/crafting/monitor",
+        "east": "fabricated-energistics:block/crafting/unit",
+        "west": "fabricated-energistics:block/crafting/unit",
+        "south": "fabricated-energistics:block/crafting/unit",
+        "up": "fabricated-energistics:block/crafting/unit",
+        "down": "fabricated-energistics:block/crafting/unit"
+    }
+}

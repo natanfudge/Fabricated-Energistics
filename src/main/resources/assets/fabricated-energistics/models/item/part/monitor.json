@@ -1,0 +1,9 @@
+{
+    "parent": "fabricated-energistics:item/part/display",
+    "textures": {
+        "front": "fabricated-energistics:item/part/crafting_terminal",
+        "front_bright": "fabricated-energistics:parts/monitor_bright",
+        "front_medium": "fabricated-energistics:parts/monitor_colored",
+        "front_dark": "fabricated-energistics:parts/monitor_colored"
+    }
+}

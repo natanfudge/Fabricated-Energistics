@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:block/drive_base",
+    "textures": {
+        "front": "fabricated-energistics:block/drive_front_flat"
+    }
+}

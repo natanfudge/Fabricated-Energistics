@@ -1,0 +1,9 @@
+{
+    "parent": "fabricated-energistics:item/part/display",
+    "textures": {
+        "front": "fabricated-energistics:item/part/interface_terminal",
+        "front_bright": "fabricated-energistics:parts/interface_terminal_bright",
+        "front_medium": "fabricated-energistics:parts/interface_terminal_medium",
+        "front_dark": "fabricated-energistics:parts/interface_terminal_dark"
+    }
+}

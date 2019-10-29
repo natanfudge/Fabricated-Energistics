@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:block/vibration_chamber_off",
+    "textures": {
+        "front": "fabricated-energistics:block/vibration_chamber_front_on"
+    }
+}

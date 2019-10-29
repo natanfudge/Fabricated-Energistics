@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "fabricated-energistics:block/quartz_pillar_top",
+        "side": "fabricated-energistics:block/quartz_pillar_side",
+        "top": "fabricated-energistics:block/quartz_pillar_top"
+    }
+}

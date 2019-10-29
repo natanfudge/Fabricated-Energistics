@@ -20,6 +20,8 @@ class DriveBayBlockEntity : BlockEntity(Type), ImplementedInventory {
         super<ImplementedInventory>.markDirty()
     }
 
+    override fun isValidInvStack(slot: Int, stack: ItemStack) = stack.item is StorageDisk
+
     override fun fromTag(tag: CompoundTag) {
         super.fromTag(tag)
         Inventories.fromTag(tag, items)

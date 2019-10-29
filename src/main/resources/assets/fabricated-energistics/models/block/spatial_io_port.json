@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "bottom": "fabricated-energistics:block/spatial_io_port_bottom",
+        "side": "fabricated-energistics:block/spatial_io_port_side",
+        "top": "fabricated-energistics:block/spatial_io_port"
+    }
+}

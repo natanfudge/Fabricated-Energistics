@@ -1,0 +1,9 @@
+{
+    "parent": "fabricated-energistics:block/cube/cube_ae_machine",
+    "textures": {
+        "bottom": "fabricated-energistics:block/grindstone_bottom",
+        "front": "fabricated-energistics:block/grindstone_front",
+        "side": "fabricated-energistics:block/grindstone_side",
+        "top": "fabricated-energistics:block/grindstone"
+    }
+}

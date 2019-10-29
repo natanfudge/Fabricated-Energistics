@@ -1,0 +1,9 @@
+{
+    "parent": "fabricated-energistics:item/part/display",
+    "textures": {
+        "front": "fabricated-energistics:item/part/conversion_monitor",
+        "front_bright": "fabricated-energistics:parts/conversion_monitor_bright",
+        "front_medium": "fabricated-energistics:parts/conversion_monitor_medium",
+        "front_dark": "fabricated-energistics:parts/conversion_monitor_dark"
+    }
+}

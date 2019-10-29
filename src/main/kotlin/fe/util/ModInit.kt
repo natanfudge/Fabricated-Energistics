@@ -1,10 +1,14 @@
 package fe.util
 
+import io.github.cottonmc.cotton.gui.CottonScreenController
+import io.github.cottonmc.cotton.gui.client.CottonScreen
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry
 import net.fabricmc.fabric.api.client.model.ModelVariantProvider
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry
+import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry
+import net.fabricmc.fabric.api.container.ContainerProviderRegistry
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
@@ -13,6 +17,9 @@ import net.minecraft.client.render.model.ModelBakeSettings
 import net.minecraft.client.render.model.ModelLoader
 import net.minecraft.client.render.model.UnbakedModel
 import net.minecraft.client.texture.Sprite
+import net.minecraft.container.BlockContext
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
@@ -53,7 +60,19 @@ class CommonModInitializationContext(
         init(BlockWithItemRegistryContext(modId, group))
     }
 
+    fun registerContainer(containerId: Identifier, factory: ControllerFactory) {
+        ContainerProviderRegistry.INSTANCE.registerFactory(containerId) { syncId, _, player, buf ->
+            factory(
+                syncId,
+                player.inventory,
+                BlockContext.create(player.world, buf.readBlockPos())
+            )
+        }
+    }
+
 }
+
+typealias ControllerFactory = (Int, PlayerInventory, BlockContext) -> CottonScreenController
 
 class ClientModInitializationContext(@PublishedApi internal val modId: String) {
     inline fun <reified T : BlockEntity> registerBlockEntityRenderer(renderer: BlockEntityRenderer<T>) {
@@ -84,6 +103,25 @@ class ClientModInitializationContext(@PublishedApi internal val modId: String) {
             }
         }
     }
+
+    fun <T : CottonScreenController> registerScreen(
+        screenId: Identifier,
+        controllerFactory: (Int, PlayerInventory, BlockContext) -> T,
+        screenFactory: (T, PlayerEntity) -> CottonScreen<T>
+    ) {
+        ScreenProviderRegistry.INSTANCE.registerFactory(screenId) { syncId, _, player, buf ->
+            screenFactory(
+                controllerFactory(
+                    syncId,
+                    player.inventory,
+                    BlockContext.create(player.world, buf.readBlockPos())
+                ),
+                player
+            )
+        }
+    }
+
+
 }
 
 

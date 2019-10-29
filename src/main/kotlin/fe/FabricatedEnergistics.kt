@@ -2,60 +2,52 @@
 
 package fe
 
-import fe.drive.DriveBayScreenController
-import fe.drive.DriveBayScreen
-import fe.drive.DriveBayBlock
-import fe.drive.DriveBayBlockEntity
+import fe.chest.MeChestBlock
+import fe.chest.MeChestScreen
+import fe.chest.MeChestScreenController
+import fe.drive.*
+import fe.util.initClientOnly
 import fe.util.initCommon
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
-import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry
-import net.minecraft.container.BlockContext
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
 
 const val ModId = "fabricated-energistics"
+
 object FabricatedEnergistics {
-     val Group = FabricItemGroupBuilder.build(modId("item_group")) { ItemStack(DriveBayBlock) }
+    val Group = FabricItemGroupBuilder.build(modId("item_group")) { ItemStack(DriveBayBlock) }
 }
 
 
 fun modId(path: String) = Identifier(ModId, path)
-fun init() = initCommon(ModId,FabricatedEnergistics.Group) {
+fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
     registerBlocksWithItemBlocks {
         DriveBayBlock withId DriveBayBlock.Id
+        MeChestBlock withId MeChestBlock.Id
     }
 
-    registerTo(Registry.BLOCK_ENTITY_TYPE){
+    registerTo(Registry.BLOCK_ENTITY_TYPE) {
         DriveBayBlockEntity.Type withId DriveBayBlock.Id
     }
 
-
-    ContainerProviderRegistry.INSTANCE.registerFactory(DriveBayBlock.Id) { syncId, _, player, buf ->
-        DriveBayScreenController(
-            syncId,
-            player.inventory,
-            BlockContext.create(player.world, buf.readBlockPos())
-        )
+    registerTo(Registry.ITEM) {
+        for ((cell, id) in StorageDisk.cells) {
+            cell withId id
+        }
     }
+
+
+    registerContainer(DriveBayBlock.Id, ::DriveBayScreenController)
+    registerContainer(MeChestBlock.Id, ::MeChestScreenController)
 
 
 }
 
 
-fun initClient() {
-    ScreenProviderRegistry.INSTANCE.registerFactory(
-        DriveBayBlock.Id
-    ) { syncId, _, player, buf ->
-        DriveBayScreen(
-            DriveBayScreenController(
-                syncId,
-                player.inventory,
-                BlockContext.create(player.world, buf.readBlockPos())
-            ),
-            player
-        )
-    }
+fun initClient() = initClientOnly(ModId) {
+    registerScreen(DriveBayBlock.Id, ::DriveBayScreenController, ::DriveBayScreen)
+    registerScreen(MeChestBlock.Id, ::MeChestScreenController, ::MeChestScreen)
+
 }

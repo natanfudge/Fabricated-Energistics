@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "powered=false": {
+            "model": "fabricated-energistics:quartz_growth_accelerator_off"
+        },
+        "powered=true": {
+            "model": "fabricated-energistics:quartz_growth_accelerator_on"
+        }
+    }
+}

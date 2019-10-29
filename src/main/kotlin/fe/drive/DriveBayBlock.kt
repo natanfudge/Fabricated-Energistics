@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriveBayBlock : BlockWithBlockEntity(Builders.blockSettings(Material.METAL), ::DriveBayBlockEntity) {
-    val Id = modId("drive_bay")
+    val Id = modId("drive")
     private fun World.getDriveBayBlockEntity(pos: BlockPos) = world.getBlockEntity(pos) as DriveBayBlockEntity
     override fun activate(
         state: BlockState,
@@ -24,7 +24,6 @@ object DriveBayBlock : BlockWithBlockEntity(Builders.blockSettings(Material.META
         hit: BlockHitResult
     ): Boolean {
         if (world.isClient) return true
-        val blockEntity = world.getDriveBayBlockEntity(pos)
         ContainerProviderRegistry.INSTANCE.openContainer(Id, player) { it.writeBlockPos(pos) }
         return true
     }

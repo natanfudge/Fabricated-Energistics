@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "variant=default": {
+            "model": "fabricated-energistics:quartz_block"
+        }
+    }
+}

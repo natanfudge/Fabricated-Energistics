@@ -1,0 +1,9 @@
+{
+    "parent": "fabricated-energistics:block/cube/cube_ae_machine",
+    "textures": {
+        "bottom": "fabricated-energistics:block/vibration_chamber",
+        "front": "fabricated-energistics:block/vibration_chamber_front",
+        "side": "fabricated-energistics:block/vibration_chamber",
+        "top": "fabricated-energistics:block/vibration_chamber"
+    }
+}

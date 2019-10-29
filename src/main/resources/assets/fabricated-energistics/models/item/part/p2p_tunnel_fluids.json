@@ -1,0 +1,6 @@
+{
+    "parent": "fabricated-energistics:item/part/p2p_tunnel",
+    "textures": {
+        "type": "blocks/lapis_block"
+    }
+}

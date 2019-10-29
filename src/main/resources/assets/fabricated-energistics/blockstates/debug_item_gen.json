@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "fabricated-energistics:debug/item_gen"
+        }
+    }
+}
