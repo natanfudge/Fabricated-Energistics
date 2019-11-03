@@ -1,10 +1,10 @@
 {
     "variants": {
         "formed=false": {
-            "model": "fabricated-energistics:qnb/link"
+            "model": "appliedenergistics2:qnb/link"
         },
         "formed=true": {
-            "model": "fabricated-energistics:qnb/qnb_formed"
+            "model": "appliedenergistics2:qnb/qnb_formed"
         }
     }
 }

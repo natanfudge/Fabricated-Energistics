@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:charger"
+        "normal": {
+            "model": "appliedenergistics2:charger"
         }
     }
 }

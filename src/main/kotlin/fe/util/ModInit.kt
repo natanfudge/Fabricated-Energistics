@@ -1,5 +1,7 @@
 package fe.util
 
+import fe.client.gui.stolen.LettuceScreen
+import fe.client.gui.stolen.LettuceScreenController
 import io.github.cottonmc.cotton.gui.CottonScreenController
 import io.github.cottonmc.cotton.gui.client.CottonScreen
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
@@ -18,6 +20,7 @@ import net.minecraft.client.render.model.ModelLoader
 import net.minecraft.client.render.model.UnbakedModel
 import net.minecraft.client.texture.Sprite
 import net.minecraft.container.BlockContext
+import net.minecraft.container.Container
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.BlockItem
@@ -60,7 +63,7 @@ class CommonModInitializationContext(
         init(BlockWithItemRegistryContext(modId, group))
     }
 
-    fun registerContainer(containerId: Identifier, factory: ControllerFactory) {
+    fun registerContainer(containerId: Identifier, factory: (Int, PlayerInventory, BlockContext) -> Container) {
         ContainerProviderRegistry.INSTANCE.registerFactory(containerId) { syncId, _, player, buf ->
             factory(
                 syncId,
@@ -72,7 +75,7 @@ class CommonModInitializationContext(
 
 }
 
-typealias ControllerFactory = (Int, PlayerInventory, BlockContext) -> CottonScreenController
+//typealias ControllerFactory =
 
 class ClientModInitializationContext(@PublishedApi internal val modId: String) {
     inline fun <reified T : BlockEntity> registerBlockEntityRenderer(renderer: BlockEntityRenderer<T>) {
@@ -122,6 +125,22 @@ class ClientModInitializationContext(@PublishedApi internal val modId: String) {
     }
 
 
+    fun <T : LettuceScreenController> registerLettuceScreen(
+        screenId: Identifier,
+        controllerFactory: (Int, PlayerInventory, BlockContext) -> T,
+        screenFactory: (T, PlayerEntity) -> LettuceScreen<T>
+    ) {
+        ScreenProviderRegistry.INSTANCE.registerFactory(screenId) { syncId, _, player, buf ->
+            screenFactory(
+                controllerFactory(
+                    syncId,
+                    player.inventory,
+                    BlockContext.create(player.world, buf.readBlockPos())
+                ),
+                player
+            )
+        }
+    }
 }
 
 

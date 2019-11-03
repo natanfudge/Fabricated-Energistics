@@ -3,7 +3,7 @@ package fe.drive
 import fe.modId
 import fe.util.BlockWithBlockEntity
 import fe.util.Builders
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry
+import fe.util.openGui
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
 import net.minecraft.entity.player.PlayerEntity
@@ -24,7 +24,7 @@ object DriveBayBlock : BlockWithBlockEntity(Builders.blockSettings(Material.META
         hit: BlockHitResult
     ): Boolean {
         if (world.isClient) return true
-        ContainerProviderRegistry.INSTANCE.openContainer(Id, player) { it.writeBlockPos(pos) }
+        player.openGui(Id, pos)
         return true
     }
 }

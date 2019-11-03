@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:fluid_interface"
+        "normal": {
+            "model": "appliedenergistics2:fluid_interface"
         }
     }
 }

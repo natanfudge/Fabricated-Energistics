@@ -18,6 +18,7 @@ import net.minecraft.nbt.LongTag
 import net.minecraft.recipe.Ingredient
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
+import net.minecraft.util.DefaultedList
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -85,11 +86,7 @@ fun IWorld.dropItemStack(stack: ItemStack, pos: Vec3d): ItemEntity =
     }
 
 
-fun ItemStack.copy(count: Int): ItemStack = copy().apply { this.count = count }
 
-val ItemConvertible.itemStack get() = ItemStack(this)
-
-inline fun Ingredient.matches(itemStack: ItemStack) = method_8093(itemStack)
 
 /**
  * Note that what is held in the main hand still exists in the inventory, so it includes that.
@@ -101,91 +98,3 @@ fun PlayerEntity.isHoldingItemIn(hand: Hand): Boolean = !getStackInHand(hand).is
 
 fun PlayerEntity.offerOrDrop(itemStack: ItemStack) = inventory.offerOrDrop(world, itemStack)
 
-private fun Inventory.stackIsNotEmptyAndCanAddMore(toStack: ItemStack, stackToAdd: ItemStack): Boolean {
-    return !toStack.isEmpty &&
-            areItemsEqual(toStack, stackToAdd)
-            && toStack.isStackable
-            && toStack.count < toStack.maxCount
-            && toStack.count < this.invMaxStackAmount
-}
-
-
-/**
- * Returns the remaining stack
- */
-fun Inventory.insert(stack: ItemStack, direction: Direction = Direction.UP): ItemStack {
-    val remainingAfterNonEmptySlots = distributeToAvailableSlots(stack, acceptEmptySlots = false, direction = direction)
-    return distributeToAvailableSlots(remainingAfterNonEmptySlots, acceptEmptySlots = true, direction = direction)
-}
-
-fun World.inventoryExistsIn(pos: BlockPos): Boolean = world.getBlock(pos) is InventoryProvider
-        || world.getBlockEntity(pos) is Inventory
-
-
-fun World.getInventoryIn(pos: BlockPos): Inventory? {
-    val blockEntityInventory = world.getBlockEntity(pos)
-
-    // Fuck you notch
-    if (blockEntityInventory is ChestBlockEntity) {
-        val blockState = world.getBlockState(pos)
-        if (blockState.block is ChestBlock) {
-            return ChestBlock.getInventory(blockState, this, pos, true)
-        }
-    }
-
-    if (blockEntityInventory is Inventory) return blockEntityInventory
-    val blockState = world.getBlockState(pos)
-    return (blockState.block as? InventoryProvider)?.getInventory(blockState, this, pos)
-}
-
-
-private fun areItemsEqual(stack1: ItemStack, stack2: ItemStack): Boolean {
-    return stack1.item === stack2.item && ItemStack.areTagsEqual(stack1, stack2)
-}
-
-private fun Inventory.availableSlots(direction: Direction): Iterable<Int> {
-    return if (this is SidedInventory) getInvAvailableSlots(direction).toList() else (0 until invSize)
-}
-
-private fun Inventory.canInsert(slot: Int, stack: ItemStack, direction: Direction): Boolean {
-    return if (this is SidedInventory) canInsertInvStack(slot, stack, direction) else isValidInvStack(slot, stack)
-}
-
-private fun Inventory.distributeToAvailableSlots(
-    stack: ItemStack,
-    acceptEmptySlots: Boolean,
-    direction: Direction
-): ItemStack {
-    val maxStackSize = invMaxStackAmount
-    var stackCountLeftToDistribute = stack.count
-    for (slot in availableSlots(direction)) {
-        if (!canInsert(slot, stack, direction)) continue
-
-        val stackInSlot = getInvStack(slot)
-        if ((acceptEmptySlots && stackInSlot.isEmpty) || stackIsNotEmptyAndCanAddMore(stackInSlot, stack)) {
-            val amountThatCanFitInSlot = maxStackSize - stackInSlot.count
-            if (amountThatCanFitInSlot >= 0) {
-                setInvStack(
-                    slot, ItemStack(
-                        stack.item,
-                        min(maxStackSize, stackInSlot.count + stackCountLeftToDistribute)
-                    )
-                )
-                stackCountLeftToDistribute -= amountThatCanFitInSlot
-            }
-        }
-
-        if (stackCountLeftToDistribute <= 0) return ItemStack.EMPTY
-
-    }
-
-    return stack.copy(count = stackCountLeftToDistribute)
-}
-//
-//inline class Client(val world: World)
-//inline class Server(val world: World)
-//
-//inline fun server(world: World, code: Server.() -> Unit) {
-//    if (world.isServer) Server(world).apply(code)
-//}
-//

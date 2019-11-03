@@ -1,12 +1,17 @@
 package fe.util
 
-import fe.drive.DriveBayScreenController
+import fe.client.gui.NetworkInventoryScreenController
+import fe.client.gui.stolen.LettuceScreen
+import fe.client.gui.stolen.LettuceScreenController
 import io.github.cottonmc.cotton.gui.CottonScreenController
 import io.github.cottonmc.cotton.gui.client.CottonScreen
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
 import io.github.cottonmc.cotton.gui.widget.WItemSlot
+import net.fabricmc.fabric.api.container.ContainerProviderRegistry
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventory
+import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
 
 class GridPainter(
     private val root: WGridPanel,
@@ -37,3 +42,16 @@ abstract class ExitableScreen<T : CottonScreenController>(container: T, player: 
         return super.keyPressed(ch, keyCode, modifiers)
     }
 }
+abstract class FreeExitableScreen<T : LettuceScreenController>(container: T, player: PlayerEntity)
+    : LettuceScreen<T>(container, player){
+    override fun keyPressed(ch: Int, keyCode: Int, modifiers: Int): Boolean {
+        if (getMinecraftClient().options.keyInventory.matchesKey(ch, keyCode)) {
+            getMinecraftClient().openScreen(null)
+            return true
+        }
+        return super.keyPressed(ch, keyCode, modifiers)
+    }
+}
+
+fun PlayerEntity.openGui(id : Identifier,pos : BlockPos) = ContainerProviderRegistry.INSTANCE.openContainer(
+    id,this){it.writeBlockPos(pos)}

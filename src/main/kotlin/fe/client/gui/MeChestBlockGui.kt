@@ -1,5 +1,7 @@
-package fe.chest
+package fe.client.gui
 
+import fe.chest.MeChestBlock
+import fe.modId
 import fe.util.ExitableScreen
 import fe.util.grid
 import io.github.cottonmc.cotton.gui.CottonScreenController
@@ -20,6 +22,10 @@ class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, con
         getBlockPropertyDelegate(context)
     ) {
 
+    companion object{
+        val Id = modId("chest_drives")
+    }
+
     override fun canUse(entity: PlayerEntity): Boolean {
         return blockInventory.canPlayerUseInv(entity)
     }
@@ -29,10 +35,10 @@ class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, con
         this.rootPanel = rootPanel
         rootPanel.add(WLabel(TranslatableText(MeChestBlock.translationKey), WLabel.DEFAULT_TEXT_COLOR), 0, 0)
         grid(rootPanel, blockInventory) {
-            inventorySlot(5,3)
+            inventorySlot(4,2)
         }
 
-        rootPanel.add(createPlayerInventoryPanel(), 0, 6)
+        rootPanel.add(createPlayerInventoryPanel(), 0, 5)
 
         rootPanel.validate(this)
     }

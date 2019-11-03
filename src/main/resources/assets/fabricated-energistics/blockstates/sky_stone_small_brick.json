@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:sky_stone_small_brick"
+        "normal": {
+            "model": "appliedenergistics2:sky_stone_small_brick"
         }
     }
 }

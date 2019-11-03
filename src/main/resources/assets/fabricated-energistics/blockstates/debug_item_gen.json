@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:debug/item_gen"
+        "normal": {
+            "model": "appliedenergistics2:debug/item_gen"
         }
     }
 }

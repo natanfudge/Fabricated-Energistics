@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:paint"
+        "normal": {
+            "model": "appliedenergistics2:paint"
         }
     }
 }

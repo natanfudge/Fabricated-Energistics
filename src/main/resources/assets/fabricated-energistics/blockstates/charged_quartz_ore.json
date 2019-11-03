@@ -2,13 +2,13 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "all": "fabricated-energistics:block/charged_quartz_ore"
+            "all": "appliedenergistics2:blocks/charged_quartz_ore"
         }
     },
     "variants": {
-        "": [
+        "normal": [
             {
-                "model": "fabricated-energistics:charged_quartz_ore"
+                "model": "appliedenergistics2:charged_quartz_ore"
             }
         ],
         "inventory": [

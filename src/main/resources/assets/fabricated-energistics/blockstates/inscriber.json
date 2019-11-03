@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:inscriber"
+        "normal": {
+            "model": "appliedenergistics2:inscriber"
         }
     }
 }

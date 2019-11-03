@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:builtin/cable_bus"
+        "normal": {
+            "model": "appliedenergistics2:builtin/cable_bus"
         }
     }
 }

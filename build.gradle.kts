@@ -73,8 +73,6 @@ dependencies {
     modDependency("net.fabricmc:fabric-language-kotlin:${prop("fabric_kotlin_version")}")
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
-//    compile ("androidx.compose:compose-runtime:$compose_version")
-//    compile ("androidx.compose:compose-runtime:$compose_version")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
         exclude(group = "io.github.prospector")

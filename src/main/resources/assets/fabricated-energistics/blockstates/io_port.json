@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:io_port"
+        "normal": {
+            "model": "appliedenergistics2:io_port"
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:energy_acceptor"
+        "normal": {
+            "model": "appliedenergistics2:energy_acceptor"
         }
     }
 }

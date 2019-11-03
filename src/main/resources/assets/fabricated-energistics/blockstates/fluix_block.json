@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:fluix_block"
+        "normal": {
+            "model": "appliedenergistics2:fluix_block"
         }
     }
 }

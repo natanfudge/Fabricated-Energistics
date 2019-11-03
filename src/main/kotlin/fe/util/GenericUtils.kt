@@ -1,5 +1,6 @@
 package fe.util
 
+import fe.LogId
 import java.lang.management.ManagementFactory
 import java.util.*
 import kotlin.collections.ArrayList
@@ -100,9 +101,9 @@ inline fun <T, R : Comparable<R>> Iterable<T>.maxValueBy(selector: (T) -> R): R?
 const val LogInfo = true
 const val LogWarning = true
 
-inline fun logDebug(lazyMessage: () -> String) = if (LogDebug) println("${Date()} [SC/DEBUG]: ${lazyMessage()}") else Unit
-inline fun logInfo(lazyMessage: () -> String) = if (LogInfo) println("${Date()} [SC/INFO]: ${lazyMessage()}") else Unit
-inline fun logWarning(lazyMessage: () -> String) = if (LogWarning) println("${Date()} [SC/WARN]: ${lazyMessage()}") else Unit
+inline fun logDebug(lazyMessage: () -> String) = if (LogDebug) println("${Date()} [$LogId/DEBUG]: ${lazyMessage()}") else Unit
+inline fun logInfo(lazyMessage: () -> String) = if (LogInfo) println("${Date()} [$LogId/INFO]: ${lazyMessage()}") else Unit
+inline fun logWarning(lazyMessage: () -> String) = if (LogWarning) println("${Date()} [$LogId/WARN]: ${lazyMessage()}") else Unit
 
 val assertionsEnabled = ManagementFactory.getRuntimeMXBean().inputArguments.toString().indexOf("-agentlib:jdwp") > 0
 

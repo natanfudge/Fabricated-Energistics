@@ -1,5 +1,6 @@
 package fe.drive
 
+import fe.item.StorageDisk
 import fe.util.Builders
 import fe.util.ImplementedInventory
 import net.minecraft.block.entity.BlockEntity

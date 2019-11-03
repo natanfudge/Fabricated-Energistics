@@ -1,7 +1,7 @@
 {
     "variants": {
         "variant=default": {
-            "model": "fabricated-energistics:quartz_pillar"
+            "model": "appliedenergistics2:quartz_pillar"
         }
     }
 }

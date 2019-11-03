@@ -1,7 +1,7 @@
 {
     "variants": {
         "variant=default": {
-            "model": "fabricated-energistics:chiseled_quartz_block"
+            "model": "appliedenergistics2:chiseled_quartz_block"
         }
     }
 }

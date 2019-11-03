@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:debug/chunk_loader"
+        "normal": {
+            "model": "appliedenergistics2:debug/chunk_loader"
         }
     }
 }

@@ -1,14 +1,14 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "fabricated-energistics:molecular_assembler"
+        "model": "appliedenergistics2:molecular_assembler"
     },
     "variants": {
         "powered": {
             "false": {
             },
             "true": {
-                "submodel": "fabricated-energistics:molecular_assembler_lights"
+                "submodel": "appliedenergistics2:molecular_assembler_lights"
             }
         }
     }

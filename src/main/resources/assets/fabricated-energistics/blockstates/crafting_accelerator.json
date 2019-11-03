@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": {
-            "model": "fabricated-energistics:crafting/accelerator"
+        "normal": {
+            "model": "appliedenergistics2:crafting/accelerator"
         }
     }
 }

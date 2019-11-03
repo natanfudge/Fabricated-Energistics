@@ -1,8 +1,10 @@
 package fe.chest
 
+import fe.client.gui.MeChestScreenController
+import fe.client.gui.NetworkInventoryScreenController
 import fe.modId
 import fe.util.BlockWithBlockEntity
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry
+import fe.util.openGui
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
 import net.minecraft.entity.player.PlayerEntity
@@ -24,7 +26,9 @@ object MeChestBlock : BlockWithBlockEntity(Settings.of(Material.METAL), ::MeChes
     ): Boolean {
         if (world.isClient) return true
         if (hit.side != Direction.UP) {
-            ContainerProviderRegistry.INSTANCE.openContainer(Id, player) { it.writeBlockPos(pos) }
+            player.openGui(MeChestScreenController.Id, pos)
+        } else {
+            player.openGui(NetworkInventoryScreenController.Id, pos)
         }
 
         return true
