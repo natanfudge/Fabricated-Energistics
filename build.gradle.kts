@@ -74,12 +74,12 @@ dependencies {
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
 
-    devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
-        exclude(group = "io.github.prospector")
-    }
-    devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
-    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
-    devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
+//    devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
+//        exclude(group = "io.github.prospector")
+//    }
+//    devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
+//    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
+//    devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
 
 }
 
@@ -99,7 +99,7 @@ configurations.all {
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
 //    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
-    mappings("net.fabricmc:yarn-unmerged:1.14.4+build.local:v2")
+    mappings("net.fabricmc:v2-yarn:1.14.4+build.local")
     modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }
