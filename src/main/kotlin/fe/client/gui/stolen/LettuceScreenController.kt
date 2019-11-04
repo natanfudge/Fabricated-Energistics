@@ -1,8 +1,8 @@
 package fe.client.gui.stolen
 
 import fe.network.NetworkGuiInventory
+import fe.util.copy
 import fe.util.insert
-import fe.util.isServer
 import io.github.cottonmc.cotton.gui.GuiDescription
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder
 import io.github.cottonmc.cotton.gui.ValidatedSlot
@@ -15,15 +15,14 @@ import net.minecraft.container.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.recipe.Recipe
 import net.minecraft.recipe.RecipeFinder
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import java.util.*
+import java.lang.Integer.min
 
+private const val RightClick = 1
 
 open class LettuceScreenController(
     syncId: Int,
@@ -33,7 +32,7 @@ open class LettuceScreenController(
 ) : CraftingContainer<Inventory?>(null, syncId), GuiDescription {
     protected var world = playerInventory.player.world
     private var _propertyDelegate = propertyDelegate
-    protected var _rootPanel  : WPanel= WGridPanel()
+    protected var _rootPanel: WPanel = WGridPanel()
     private var _titleColor = WLabel.DEFAULT_TEXT_COLOR
     private var darkTitleColor = WLabel.DEFAULT_DARKMODE_TEXT_COLOR
     private var _focus: WWidget? = null
@@ -65,8 +64,9 @@ open class LettuceScreenController(
     override fun addSlotPeer(slot: ValidatedSlot) {
         addSlot(slot)
     }
-    //TODO: when shiftclicking back it's inserting too many items on the existing thing.
-    //TODO: taking half a stack from the block inventory doesn't work
+    //TODO: test taking only 1
+
+    //TODO: allow the spreading items thing because it's annoying
 
     override fun onSlotClick(
         slotNumber: Int,
@@ -74,30 +74,33 @@ open class LettuceScreenController(
         action: SlotActionType,
         player: PlayerEntity
     ): ItemStack {
-
-        if (slotNumber < 0) return ItemStack.EMPTY
+//        if (slotNumber >= slotList.size) return ItemStack.EMPTY
+        if (slotNumber < 0) {
+            return if (action == SlotActionType.QUICK_MOVE) ItemStack.EMPTY
+            else super.onSlotClick(slotNumber, clickData, action, player)
+        }
         if (slotNumber >= slotList.size) return ItemStack.EMPTY
         val slot = slotList[slotNumber]
         // we trust vanilla knows what's it doing when interacting with the playerInventory.
         // Other than in quickmove.
         // In quickmove it just does an infinite loop.
         // thanks Mojang.
-        if(slot.inventory === playerInventory && action != SlotActionType.QUICK_MOVE) {
+        if (slot.inventory === playerInventory && action != SlotActionType.QUICK_MOVE) {
             return super.onSlotClick(slotNumber, clickData, action, player)
         }
         if (slot == null || !slot.canTakeItems(player)) return ItemStack.EMPTY
 
         val result = when (action) {
-            SlotActionType.PICKUP -> pickup(slot)
+            SlotActionType.PICKUP -> pickup(slot, leftClick = clickData == RightClick)
             SlotActionType.QUICK_MOVE -> quickMove(slot)
             SlotActionType.SWAP -> TODO()
             SlotActionType.CLONE -> TODO()
-            SlotActionType.THROW -> TODO()
+            SlotActionType.THROW -> player.drop(slot, ctrlClick = clickData == 1)//TODO shiftclick
             SlotActionType.QUICK_CRAFT -> false //TODO: crafting terminal?
             SlotActionType.PICKUP_ALL -> false //TODO
         }
 
-        return if(result)   slot.stack.copy() else ItemStack.EMPTY
+        return if (result) slot.stack.copy() else ItemStack.EMPTY
 
 
     }
@@ -111,7 +114,7 @@ open class LettuceScreenController(
             val extracted = blockInventory.extract(toTransfer, toTransfer.maxCount)
             val amountRemaining = playerInventory.insert(extracted)
             // Put back what the player can't fit
-            if(amountRemaining.count > 0) blockInventory.insert(amountRemaining)
+            if (amountRemaining.count > 0) blockInventory.insert(amountRemaining)
             //Try to transfer the item from the player to the block
         } else {
             val remaining = blockInventory.insert(toTransfer)
@@ -121,21 +124,43 @@ open class LettuceScreenController(
         return true
     }
 
-    private fun pickup(slot: Slot): Boolean {
-        val toTransfer = slot.stack
+    private fun pickup(slot: Slot, leftClick: Boolean): Boolean {
+
         val heldStack = playerInventory.cursorStack
         if (heldStack.isEmpty) {
+            val toTransfer = slot.stack
             if (!slot.hasStack()) return false
             // Pick up
-            playerInventory.cursorStack = blockInventory.extract(toTransfer, toTransfer.maxCount)
+            val amountToTake = if (leftClick) toTransfer.maxTransferAmount / 2 else toTransfer.maxTransferAmount
+            playerInventory.cursorStack = blockInventory.extract(toTransfer, amountToTake)
 
         } else {
+
+            val stackToInsert = if (leftClick) heldStack.copy(count = 1) else heldStack
             // Put down
-            heldStack.count = blockInventory.insert(heldStack).count
+            val amountLeft = blockInventory.insert(stackToInsert).count
+            val amountReduced = stackToInsert.count - amountLeft
+
+            heldStack.count -= amountReduced
         }
+
 
         return true
     }
+
+    private fun PlayerEntity.drop(slot: Slot, ctrlClick: Boolean): Boolean {
+        val toDrop = slot.stack
+        val extracted = blockInventory.extract(toDrop, amount = if (ctrlClick) toDrop.maxTransferAmount else 1)
+        return if (extracted.count > 0) {
+            dropItem(extracted, true)
+//            sendContentUpdates()
+            true
+        } else false
+
+    }
+
+    private val ItemStack.maxTransferAmount get() = min(maxCount, count)
+
 
     fun doMouseUp(x: Int, y: Int, state: Int): WWidget? {
         return _rootPanel.onMouseUp(x, y, state)

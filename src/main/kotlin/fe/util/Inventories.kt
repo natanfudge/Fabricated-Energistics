@@ -102,7 +102,7 @@ private fun Inventory.distributeToAvailableSlots(
     acceptEmptySlots: Boolean,
     direction: Direction
 ): ItemStack {
-    val maxStackSize = invMaxStackAmount
+    val maxStackSize = min(invMaxStackAmount,stack.maxCount)
     var stackCountLeftToDistribute = stack.count
     for (slot in availableSlots(direction)) {
         if (!canInsert(slot, stack, direction)) continue

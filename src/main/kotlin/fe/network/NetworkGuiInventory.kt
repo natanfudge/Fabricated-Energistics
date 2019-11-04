@@ -142,10 +142,11 @@ class NetworkGuiInventory(
 //    private fun removeStack(removedStack )
 
     private fun insertStack(addedStack: ItemStack): ItemStack {
-        insertIntoExistingStacks(addedStack)
+        val usedStack = addedStack.copy()
+        insertIntoExistingStacks(usedStack)
 
-        if (!addedStack.isEmpty) insertIntoSpace(addedStack)
-        return addedStack.copy()
+        if (!usedStack.isEmpty) insertIntoSpace(usedStack)
+        return usedStack
     }
 
 

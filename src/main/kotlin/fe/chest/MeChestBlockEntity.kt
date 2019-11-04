@@ -19,10 +19,6 @@ class MeChestBlockEntity : SyncedBlockEntity(Type), ImplementedInventory, BlockE
     }
 
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(1, ItemStack.EMPTY)
-        get() {
-            val x = 2
-            return field
-        }
 
     fun getNetworkInventory(): NetworkGuiInventory = NetworkGuiInventory(items)
 
@@ -42,7 +38,10 @@ class MeChestBlockEntity : SyncedBlockEntity(Type), ImplementedInventory, BlockE
         // the same item we copy the stack here
         val loadedItems = itemStackList(1)
         Inventories.fromTag(tag, loadedItems)
-        for(item in loadedItems) items.add(item.copy())
+
+        loadedItems.forEachIndexed { i, stack ->
+            items[i] = stack.copy()
+        }
     }
 
     override fun toTag(tag: CompoundTag): CompoundTag {

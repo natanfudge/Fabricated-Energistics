@@ -45,18 +45,15 @@ public class LettuceScreen<T extends LettuceScreenController> extends AbstractCo
 	
 	public void reposition() {
 		WPanel basePanel = container.getRootPanel();
-		if (basePanel!=null) {
-			basePanel.validate(container);
-			
-			containerWidth = basePanel.getWidth();
-			containerHeight = basePanel.getHeight();
-			
-			//DEBUG
-			if (containerWidth<16) containerWidth=300;
-			if (containerHeight<16) containerHeight=300;
-			//if (left<0 || left>300) left = 10;
-			//if (top<0 || top>300) top = 10;
-		}
+
+		containerWidth = basePanel.getWidth();
+		containerHeight = basePanel.getHeight();
+
+		//DEBUG
+		if (containerWidth<16) containerWidth=300;
+		if (containerHeight<16) containerHeight=300;
+		//if (left<0 || left>300) left = 10;
+		//if (top<0 || top>300) top = 10;
 		left = (width / 2) - (containerWidth / 2);
 		top =  (height / 2) - (containerHeight / 2);
 	}
@@ -143,41 +140,8 @@ public class LettuceScreen<T extends LettuceScreenController> extends AbstractCo
 		}
 		return result;
 	}
-	
-	//Zapping this method may fix some positioning bugs - but may cause some backgroundPainter bugs. Will need to monitor.
-	/*
-	@Override
-	public void resize(MinecraftClient minecraftClient_1, int int_1, int int_2) {
-		//super.onScaleChanged(minecraftClient_1, int_1, int_2);
-		this.width = int_1;
-		this.height = int_2;
-		reposition();
-	}*/
-	
-	/*
-	 * SPECIAL FUNCTIONS: Where possible, we want to draw everything based on *actual GUI state and composition* rather
-	 * than relying on pre-baked textures that the programmer then needs to carefully match up their GUI to.
-	 */
-	
-	private int multiplyColor(int color, float amount) {
-		int a = color & 0xFF000000;
-		float r = (color >> 16 & 255) / 255.0F;
-		float g = (color >> 8  & 255) / 255.0F;
-		float b = (color       & 255) / 255.0F;
-		
-		r = Math.min(r*amount, 1.0f);
-		g = Math.min(g*amount, 1.0f);
-		b = Math.min(b*amount, 1.0f);
-		
-		int ir = (int)(r*255);
-		int ig = (int)(g*255);
-		int ib = (int)(b*255);
-		
-		return    a |
-				(ir << 16) |
-				(ig <<  8) |
-				 ib;
-	}
+
+
 	
 	@Override
 	protected void drawBackground(float partialTicks, int mouseX, int mouseY) {
@@ -185,8 +149,7 @@ public class LettuceScreen<T extends LettuceScreenController> extends AbstractCo
 			return;
 		}
 		WPanel root = this.container.getRootPanel();
-		if (root==null) return;
-		
+
 		root.paintBackground(left, top, mouseX-left, mouseY-top);
 		
 		//TODO: Change this to a label that lives in the rootPanel instead?
@@ -204,10 +167,9 @@ public class LettuceScreen<T extends LettuceScreenController> extends AbstractCo
 			System.out.println("CONTAINER IS NULL.");
 			return;
 		}
-		
-		if (this.container.getRootPanel()!=null) {
-			this.container.getRootPanel().paintForeground(0, 0, mouseX-left, mouseY-top);
-		}
+
+		this.container.getRootPanel();
+		this.container.getRootPanel().paintForeground(0, 0, mouseX-left, mouseY-top);
 	}
 	
 	@Override
