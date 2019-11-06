@@ -1,7 +1,7 @@
 package fe.chest
 
 import fe.client.gui.MeChestScreenController
-import fe.client.gui.NetworkInventoryScreenController
+import fe.container.NetworkInventoryScreenController
 import fe.modId
 import fe.util.BlockWithBlockEntity
 import fe.util.openGui

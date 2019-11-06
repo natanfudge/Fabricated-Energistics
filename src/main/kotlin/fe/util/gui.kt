@@ -1,8 +1,5 @@
 package fe.util
 
-import fe.client.gui.NetworkInventoryScreenController
-import fe.client.gui.stolen.LettuceScreen
-import fe.client.gui.stolen.LettuceScreenController
 import io.github.cottonmc.cotton.gui.CottonScreenController
 import io.github.cottonmc.cotton.gui.client.CottonScreen
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
@@ -19,9 +16,9 @@ class GridPainter(
 ) {
     private var currentRow = 0
     private var currentIndex = 0
-    fun inventorySlot(column: Int, row: Int) {
+    fun inventorySlot(column: Int, row: Int, slotsWide: Int = 1, slotsHigh: Int = 1) {
         root.add(
-            WItemSlot.of(blockInventory, currentIndex), column, row
+            WItemSlot.of(blockInventory, currentIndex, slotsWide, slotsHigh), column, row
         )
         currentIndex++
     }
@@ -32,18 +29,8 @@ class GridPainter(
 fun grid(rootPanel: WGridPanel, inventory: Inventory, init: GridPainter.() -> Unit) =
     init(GridPainter(rootPanel, inventory))
 
-abstract class ExitableScreen<T : CottonScreenController>(container: T, player: PlayerEntity)
-    : CottonScreen<T>(container, player){
-    override fun keyPressed(ch: Int, keyCode: Int, modifiers: Int): Boolean {
-        if (getMinecraftClient().options.keyInventory.matchesKey(ch, keyCode)) {
-            getMinecraftClient().openScreen(null)
-            return true
-        }
-        return super.keyPressed(ch, keyCode, modifiers)
-    }
-}
-abstract class FreeExitableScreen<T : LettuceScreenController>(container: T, player: PlayerEntity)
-    : LettuceScreen<T>(container, player){
+abstract class ExitableScreen<T : CottonScreenController>(container: T, player: PlayerEntity) :
+    CottonScreen<T>(container, player) {
     override fun keyPressed(ch: Int, keyCode: Int, modifiers: Int): Boolean {
         if (getMinecraftClient().options.keyInventory.matchesKey(ch, keyCode)) {
             getMinecraftClient().openScreen(null)
@@ -53,5 +40,17 @@ abstract class FreeExitableScreen<T : LettuceScreenController>(container: T, pla
     }
 }
 
-fun PlayerEntity.openGui(id : Identifier,pos : BlockPos) = ContainerProviderRegistry.INSTANCE.openContainer(
-    id,this){it.writeBlockPos(pos)}
+//abstract class FreeExitableScreen<T : LettuceScreenController>(container: T, player: PlayerEntity) :
+//    LettuceScreen<T>(container, player) {
+//    override fun keyPressed(ch: Int, keyCode: Int, modifiers: Int): Boolean {
+//        if (getMinecraftClient().options.keyInventory.matchesKey(ch, keyCode)) {
+//            getMinecraftClient().openScreen(null)
+//            return true
+//        }
+//        return super.keyPressed(ch, keyCode, modifiers)
+//    }
+//}
+
+fun PlayerEntity.openGui(id: Identifier, pos: BlockPos) = ContainerProviderRegistry.INSTANCE.openContainer(
+    id, this
+) { it.writeBlockPos(pos) }

@@ -49,8 +49,8 @@ repositories {
     mavenLocal()
     jcenter()
     google()
-    flatDir{
-        dirs ("libs")
+    flatDir {
+        dirs("libs")
     }
     maven(url = "http://maven.fabricmc.net/")
     maven(url = "https://kotlin.bintray.com/kotlinx")
@@ -67,28 +67,24 @@ val compose_version = "0.1.0-dev02"
 dependencies {
 
     fabric()
-    implementation ("androidx.compose:compose-runtime")
-
 
     modDependency("net.fabricmc:fabric-language-kotlin:${prop("fabric_kotlin_version")}")
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
 
-//    devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
-//        exclude(group = "io.github.prospector")
-//    }
-//    devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
-//    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
-//    devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
-
+    devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
+        exclude(group = "io.github.prospector")
+    }
+    devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
+    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
+    devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
 }
-
 configurations.all {
     resolutionStrategy {
         eachDependency {
             if (requested.group == "net.fabricmc") {
                 if(requested.name =="tiny-mappings-parser"){
-                    useVersion("0.2.0")
+                    useVersion("0.2.0.11")
                 }
 
             }
@@ -98,8 +94,7 @@ configurations.all {
 
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
-//    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
-    mappings("net.fabricmc:v2-yarn:1.14.4+build.local")
+    mappings("net.fabricmc:yarn:1.14.4+build.local:v2")
     modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }

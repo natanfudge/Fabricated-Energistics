@@ -4,7 +4,8 @@ import fe.drive.DriveBayBlock
 import fe.util.ExitableScreen
 import fe.util.grid
 import io.github.cottonmc.cotton.gui.CottonScreenController
-import io.github.cottonmc.cotton.gui.widget.*
+import io.github.cottonmc.cotton.gui.widget.WGridPanel
+import io.github.cottonmc.cotton.gui.widget.WLabel
 import net.minecraft.container.BlockContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -29,13 +30,8 @@ class DriveBayScreenController(syncId: Int, playerInventory: PlayerInventory, co
         val rootPanel = WGridPanel(3)
         this.rootPanel = rootPanel
         rootPanel.add(WLabel(TranslatableText(DriveBayBlock.translationKey), WLabel.DEFAULT_TEXT_COLOR), 0, 0)
-        //TODO: try using the multiple slot gui
         grid(rootPanel, blockInventory) {
-            repeat(5){
-                inventorySlot(21,2 + 6 * it)
-                inventorySlot(27,2 + 6 * it)
-            }
-
+            inventorySlot(21, 2, slotsWide = 2, slotsHigh = 5)
         }
 
         rootPanel.add(createPlayerInventoryPanel(), 0, 35)
@@ -43,8 +39,6 @@ class DriveBayScreenController(syncId: Int, playerInventory: PlayerInventory, co
         rootPanel.validate(this)
     }
 }
-
-
 
 
 class DriveBayScreen(container: DriveBayScreenController, player: PlayerEntity) :

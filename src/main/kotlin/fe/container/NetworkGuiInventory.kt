@@ -1,4 +1,4 @@
-package fe.network
+package fe.container
 
 import fe.item.StorageDisk
 import fe.util.*
@@ -39,12 +39,12 @@ private const val StacksShownAtAtime = 45
 
 class NetworkGuiInventory(
     private val disks: List<ItemStack>,
-    var filter: (ItemStack) -> Boolean = { true },
-    var sortBy: (ItemStack, ItemStack) -> Int = { stackA, StackB ->
+     var filter: (ItemStack) -> Boolean = { true },
+     var sortBy: (ItemStack, ItemStack) -> Int = { stackA, StackB ->
         stackA.item.name.asFormattedString().compareTo(StackB.item.name.asFormattedString())
     },
-    var invertOrder: Boolean = false,
-    var slotsSkipped: Int = 0
+     var invertOrder: Boolean = false,
+     var slotsSkipped: Int = 0
 ) :
     Inventory {
     init {
@@ -53,16 +53,14 @@ class NetworkGuiInventory(
     }
 
     /** Inserts the stack into the inventory, returns whatever stacks it couldn't fill in. */
-    fun insert(stack: ItemStack): ItemStack {
+    fun insertToNetwork(stack: ItemStack): ItemStack {
         logSlots { "Before Insert: " }
         val returned = insertStack(stack)
         updateVisibleSlots()
         logSlots { "After Insert: " }
         return returned
     }
-//inventory 14794
-    // stack 15502
-    // tag 15516
+
     /**
      * Takes out the item matching the [stack], with the specified [amount]. Returns the stack that was taken out.
      */
@@ -74,7 +72,6 @@ class NetworkGuiInventory(
     }
 
     private fun logSlots(text: () -> String) {
-//        logVisibleSlots(text)
         logDiskInventory(text)
     }
 
@@ -83,7 +80,7 @@ class NetworkGuiInventory(
     }
 
     private inline fun logDiskInventory(text: () -> String) {
-        logDebug { "combined inventory  " + text() + combineDiskInventories().joinToString(", ") }
+//        logDebug { "combined inventory  " + text() + combineDiskInventories().joinToString(", ") }
     }
 
     override fun markDirty() {
@@ -92,29 +89,14 @@ class NetworkGuiInventory(
     override fun clear() {
         logWarning { "Wiping the network is too dangerous to be possible" }
     }
-    //TODO: override onSlotCLick
 
     override fun setInvStack(slot: Int, stack: ItemStack) {
-//        visibleSlots[slot] = stack
-////        logSlots { "Before setInvStack: " }
-//        val oldStack = visibleSlots[slot]
-//        val difference = stack.count - oldStack.count
-////        visibleSlots[slot] = stack
-//        if (difference > 0) {
-//            insertStack(stack.copy(count = difference))
-//        }
-//        if (difference < 0) {
-//            extractStack(amount = -difference, stackTakenAway = oldStack)
-//        }
-//
-//        if (difference != 0) visibleSlots = assignVisibleSlots()
-////        logSlots { "After setInvStack: " }
+        // Minecraft calls this pointlessly
     }
 
 
     override fun removeInvStack(slot: Int): ItemStack {
         logWarning { "Removing an entire itemstack shouldn't be needed" }
-        val x = 2
         return ItemStack.EMPTY
     }
 
@@ -129,17 +111,9 @@ class NetworkGuiInventory(
     //TODO: override shiftclick behavior to only take one stack
     override fun takeInvStack(slot: Int, amount: Int): ItemStack {
         logWarning { "No one should be trying to take stacks directly" }
-//        logSlots { "Before takeInvStack: " }
-//        val stackTakenAway = visibleSlots[slot]
-//        val taken = extractStack(stackTakenAway, min(amount, stackTakenAway.maxCount))
-//
-//        visibleSlots = assignVisibleSlots()
-
-//        logSlots { "After takeInvStack: " }
         return ItemStack.EMPTY
     }
 
-//    private fun removeStack(removedStack )
 
     private fun insertStack(addedStack: ItemStack): ItemStack {
         val usedStack = addedStack.copy()

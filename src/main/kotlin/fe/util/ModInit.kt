@@ -1,7 +1,5 @@
 package fe.util
 
-import fe.client.gui.stolen.LettuceScreen
-import fe.client.gui.stolen.LettuceScreenController
 import io.github.cottonmc.cotton.gui.CottonScreenController
 import io.github.cottonmc.cotton.gui.client.CottonScreen
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
@@ -125,22 +123,22 @@ class ClientModInitializationContext(@PublishedApi internal val modId: String) {
     }
 
 
-    fun <T : LettuceScreenController> registerLettuceScreen(
-        screenId: Identifier,
-        controllerFactory: (Int, PlayerInventory, BlockContext) -> T,
-        screenFactory: (T, PlayerEntity) -> LettuceScreen<T>
-    ) {
-        ScreenProviderRegistry.INSTANCE.registerFactory(screenId) { syncId, _, player, buf ->
-            screenFactory(
-                controllerFactory(
-                    syncId,
-                    player.inventory,
-                    BlockContext.create(player.world, buf.readBlockPos())
-                ),
-                player
-            )
-        }
-    }
+//    fun <T : LettuceScreenController> registerLettuceScreen(
+//        screenId: Identifier,
+//        controllerFactory: (Int, PlayerInventory, BlockContext) -> T,
+//        screenFactory: (T, PlayerEntity) -> LettuceScreen<T>
+//    ) {
+//        ScreenProviderRegistry.INSTANCE.registerFactory(screenId) { syncId, _, player, buf ->
+//            screenFactory(
+//                controllerFactory(
+//                    syncId,
+//                    player.inventory,
+//                    BlockContext.create(player.world, buf.readBlockPos())
+//                ),
+//                player
+//            )
+//        }
+//    }
 }
 
 

@@ -5,6 +5,7 @@ package fe
 import fe.chest.MeChestBlock
 import fe.chest.MeChestBlockEntity
 import fe.client.gui.*
+import fe.container.NetworkInventoryScreenController
 import fe.drive.DriveBayBlock
 import fe.drive.DriveBayBlockEntity
 import fe.item.StorageDisk
@@ -55,5 +56,5 @@ fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
 fun initClient() = initClientOnly(ModId) {
     registerScreen(DriveBayBlock.Id, ::DriveBayScreenController, ::DriveBayScreen)
     registerScreen(MeChestScreenController.Id, ::MeChestScreenController, ::MeChestScreen)
-    registerLettuceScreen(NetworkInventoryScreenController.Id, ::NetworkInventoryScreenController, ::NetworkInventoryScreen)
+    registerScreen(NetworkInventoryScreenController.Id, ::NetworkInventoryScreenController, ::NetworkInventoryScreen)
 }
