@@ -2,7 +2,6 @@ package fe.container
 
 import fe.chest.MeChestBlock
 import fe.chest.MeChestBlockEntity
-import fe.mixin.ContainerSpreadSlotsMixin
 import fe.modId
 import fe.util.copy
 import fe.util.grid
@@ -110,11 +109,11 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
         val result = when (action) {
             SlotActionType.PICKUP -> pickup(slot, leftClick = clickData == RightClick)
             SlotActionType.QUICK_MOVE -> quickMove(slot)
-            SlotActionType.SWAP -> TODO()
-            SlotActionType.CLONE -> TODO()
+            SlotActionType.SWAP -> swap(slot,clickData)
+            SlotActionType.CLONE -> super.onSlotClick(slotNumber, clickData, action, player) != ItemStack.EMPTY
             SlotActionType.THROW -> player.drop(slot, ctrlClick = clickData == 1)
             SlotActionType.QUICK_CRAFT -> spread()
-            SlotActionType.PICKUP_ALL -> false //TODO
+            SlotActionType.PICKUP_ALL -> false
         }
 
         return if (result) slot.stack.copy() else ItemStack.EMPTY
@@ -218,6 +217,30 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
     private fun spread(): Boolean {
         networkSpreadSlotAmount++
         return false
+    }
+
+    private fun swap(slot : Slot, toolbarSlot : Int) : Boolean{
+        if(toolbarSlot < 0 || toolbarSlot > 8) return false
+        val swappedStack = playerInventory.getInvStack(toolbarSlot)
+
+        if(slot.inventory == blockInventory){
+            val extracted = networkGuiInventory.extract(slot.stack,slot.stack.maxTransferAmount)
+            val amountLeftAfterInsertion = networkGuiInventory.insertToNetwork(swappedStack).count
+            playerInventory.setInvStack(toolbarSlot,extracted)
+            if(amountLeftAfterInsertion > 0) playerInventory.insert(swappedStack.copy(amountLeftAfterInsertion))
+        }else{
+            return false
+//            val amountLeftAfterInsertion = networkGuiInventory.insertToNetwork(swappedStack)
+//            val extracted =
+        }
+
+//        val amountLeft = networkGuiInventory.insertToNetwork(swappedStack).count
+//        swappedStack.count = 0
+//
+//        val amountReduced = swappedStack.count - amountLeft
+//
+//        swappedStack.count -= amountReduced
+        return true
     }
 
 
