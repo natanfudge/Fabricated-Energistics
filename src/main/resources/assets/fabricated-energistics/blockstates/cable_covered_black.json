@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/center_black"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black"
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black",
+        "x": 180,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "fabricated-energistics:block/cable/covered/connection_black",
+        "x": 180,
+        "y": 270
+      }
+    }
+  ]
+}

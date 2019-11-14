@@ -1,0 +1,6 @@
+{
+  "parent": "fabricated-energistics:item/base/cable_covered_base",
+  "textures": {
+    "base": "fabricated-energistics:parts/cable/covered/black"
+  }
+}

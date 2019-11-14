@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "powered=false": {
+            "model": "fabricated-energistics:security_station_off"
+        },
+        "powered=true": {
+            "model": "fabricated-energistics:security_station_on"
+        }
+    }
+}

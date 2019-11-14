@@ -1,8 +1,9 @@
 package fe.container
 
-import fe.chest.MeChestBlock
-import fe.chest.MeChestBlockEntity
+import fe.block.MeChestBlock
+import fe.blockentity.MeChestBlockEntity
 import fe.modId
+import fe.network.NetworkGuiInventory
 import fe.util.copy
 import fe.util.grid
 import fe.util.insert

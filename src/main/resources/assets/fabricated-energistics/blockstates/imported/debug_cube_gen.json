@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": {
+            "model": "fabricated-energistics:debug/cube_gen"
+        }
+    }
+}

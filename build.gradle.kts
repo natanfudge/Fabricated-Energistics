@@ -17,8 +17,6 @@ plugins {
 }
 
 
-
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -46,23 +44,15 @@ minecraft {
 }
 
 repositories {
+    maven(url = "https://mod-buildcraft.com/maven")
     mavenLocal()
     jcenter()
-    google()
-    flatDir {
-        dirs("libs")
-    }
     maven(url = "http://maven.fabricmc.net/")
-    maven(url = "https://kotlin.bintray.com/kotlinx")
     maven(url = "https://minecraft.curseforge.com/api/maven")
     maven(url = "http://tehnut.info/maven")
     maven(url = "https://maven.jamieswhiteshirt.com/libs-release/")
     maven(url = "http://server.bbkr.space:8081/artifactory/libs-release/")
-
-
 }
-
-val compose_version = "0.1.0-dev02"
 
 dependencies {
 
@@ -71,6 +61,7 @@ dependencies {
     modDependency("net.fabricmc:fabric-language-kotlin:${prop("fabric_kotlin_version")}")
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
+    modDependency("alexiil.mc.lib:libmultipart-all:${prop("lib_multipart_version")}")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
         exclude(group = "io.github.prospector")
@@ -78,18 +69,6 @@ dependencies {
     devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
     devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
     devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
-}
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            if (requested.group == "net.fabricmc") {
-                if(requested.name =="tiny-mappings-parser"){
-                    useVersion("0.2.0.11")
-                }
-
-            }
-        }
-    }
 }
 
 fun DependencyHandlerScope.fabric() {

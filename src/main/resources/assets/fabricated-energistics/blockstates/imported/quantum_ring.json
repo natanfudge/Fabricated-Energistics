@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "formed=false": {
+            "model": "fabricated-energistics:qnb/ring"
+        },
+        "formed=true": {
+            "model": "fabricated-energistics:qnb/qnb_formed"
+        }
+    }
+}

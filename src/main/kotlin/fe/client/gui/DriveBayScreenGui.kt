@@ -1,6 +1,6 @@
 package fe.client.gui
 
-import fe.drive.DriveBayBlock
+import fe.block.DriveBayBlock
 import fe.util.ExitableScreen
 import fe.util.grid
 import io.github.cottonmc.cotton.gui.CottonScreenController

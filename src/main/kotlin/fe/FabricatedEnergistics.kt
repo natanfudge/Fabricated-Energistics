@@ -2,12 +2,11 @@
 
 package fe
 
-import fe.chest.MeChestBlock
-import fe.chest.MeChestBlockEntity
+import fe.block.*
+import fe.blockentity.DriveBayBlockEntity
+import fe.blockentity.MeChestBlockEntity
 import fe.client.gui.*
 import fe.container.NetworkInventoryScreenController
-import fe.drive.DriveBayBlock
-import fe.drive.DriveBayBlockEntity
 import fe.item.StorageDisk
 import fe.util.initClientOnly
 import fe.util.initCommon
@@ -29,8 +28,16 @@ const val LogId = "FE"
 fun modId(path: String) = Identifier(ModId, path)
 fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
     registerBlocksWithItemBlocks {
-        DriveBayBlock withId DriveBayBlock.Id
+//        DriveBayBlock withId DriveBayBlock.Id
         MeChestBlock withId MeChestBlock.Id
+
+//        for (cable in GlassCableBlock.All.take(1)) {
+//            cable withId "cable_glass_" + cable.color.lowercase
+//        }
+
+        for (cable in CoveredCableBlock.All.take(1)) {
+            cable withId "cable_covered_" + cable.color.lowercase
+        }
     }
 
     registerTo(Registry.BLOCK_ENTITY_TYPE) {

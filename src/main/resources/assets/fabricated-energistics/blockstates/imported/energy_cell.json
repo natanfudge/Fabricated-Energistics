@@ -1,0 +1,28 @@
+{
+    "variants": {
+        "fullness=0": {
+            "model": "fabricated-energistics:energy_cell/energy_cell0"
+        },
+        "fullness=1": {
+            "model": "fabricated-energistics:energy_cell/energy_cell1"
+        },
+        "fullness=2": {
+            "model": "fabricated-energistics:energy_cell/energy_cell2"
+        },
+        "fullness=3": {
+            "model": "fabricated-energistics:energy_cell/energy_cell3"
+        },
+        "fullness=4": {
+            "model": "fabricated-energistics:energy_cell/energy_cell4"
+        },
+        "fullness=5": {
+            "model": "fabricated-energistics:energy_cell/energy_cell5"
+        },
+        "fullness=6": {
+            "model": "fabricated-energistics:energy_cell/energy_cell6"
+        },
+        "fullness=7": {
+            "model": "fabricated-energistics:energy_cell/energy_cell7"
+        }
+    }
+}

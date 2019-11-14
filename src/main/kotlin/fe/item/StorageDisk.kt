@@ -1,7 +1,7 @@
 package fe.item
 
 import fe.FabricatedEnergistics
-import fe.container.getStorageDiskContents
+import fe.network.getStorageDiskContents
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack

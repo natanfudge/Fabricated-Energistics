@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "variant=default": {
+            "model": "fabricated-energistics:sky_stone_brick"
+        }
+    }
+}

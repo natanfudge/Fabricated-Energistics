@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": {
+            "model": "fabricated-energistics:builtin/sky_compass"
+        }
+    }
+}

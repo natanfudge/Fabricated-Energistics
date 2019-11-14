@@ -1,6 +1,6 @@
 package fe.client.gui
 
-import fe.chest.MeChestBlock
+import fe.block.MeChestBlock
 import fe.modId
 import fe.util.ExitableScreen
 import fe.util.grid
