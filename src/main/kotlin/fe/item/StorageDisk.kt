@@ -1,7 +1,7 @@
 package fe.item
 
 import fe.FabricatedEnergistics
-import fe.network.getStorageDiskContents
+import fe.network.DiskStack
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -14,7 +14,7 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
     Item(Settings().group(FabricatedEnergistics.Group).maxCount(1)) {
     companion object {
         private const val PerItemCapacity = 63
-        val cells = mapOf(
+        val All = mapOf(
             StorageDisk(
                 PerItemCapacity,
                 1000
@@ -44,7 +44,7 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
         tooltip: MutableList<Text>,
         context: TooltipContext
     ) {
-        val inventory  : List<ItemStack> = getStorageDiskContents(stack) ?: return
+        val inventory = DiskStack(stack).listContents()
         tooltip.add(
             LiteralText("${inventory.sumBy { it.count }} ")
                 .append(TranslatableText("gui.fabricated-energistics.Of"))

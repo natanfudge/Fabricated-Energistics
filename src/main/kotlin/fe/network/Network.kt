@@ -2,8 +2,71 @@ package fe.network
 
 import net.minecraft.item.ItemStack
 
-interface Network {
-    val items : List<ItemStack>
+class Network(private val itemHolders: MutableList<ItemHolder>) {
+    //    private val itemHolders = mutableListOf<ItemHolder>()
+    fun allStoredItems(): List<ItemStack> = itemHolders.flatMap { it.listContents() }
+
+    /**
+     * The inserted stack will NOT be modified
+     * @return Stacks that the network does not have space for. If there is no space, it will be a (deep) clone of [stack].
+     */
+    fun insert(stack: ItemStack): ItemStack {
+        val usedStack = stack.copy()
+        for (itemHolder in itemHolders) {
+            itemHolder.insertIntoPartiallyFilledSlots(usedStack)
+            if (usedStack.isEmpty) return ItemStack.EMPTY
+        }
+
+        for (itemHolder in itemHolders) {
+            itemHolder.insertIntoEmptySlots(usedStack)
+            if (usedStack.isEmpty) return ItemStack.EMPTY
+        }
+
+        return usedStack
+    }
+
+    /**
+     * [stackExample] Represents _what_ stack will be extracted, [amount] represents _how much_ of the stack will be extracted.
+     * [stackExample] will NOT be modified.
+     */
+    fun extract(stackExample: ItemStack, amount: Int): ItemStack {
+        val extracted = stackExample.copy()
+        var extractedAmount = 0
+        for (itemHolder in itemHolders) {
+            val amountLeft = amount - extractedAmount
+            extractedAmount += itemHolder.extract(extracted, amountLeft)
+            if (amountLeft == 0) break
+            assert(amountLeft > 0)
+        }
+        extracted.count = extractedAmount
+        return extracted
+    }
+}
+
+
+interface ItemHolder {
+    /**
+     * Returns all non-empty stacks
+     */
+    fun listContents(): List<ItemStack>
+
+    /**
+     * WILL MODIFY the stack, and from the stack will remain whatever cannot be inserted.
+     */
+    fun insertIntoPartiallyFilledSlots(stack: ItemStack)
+
+    /**
+     * WILL modify the stack, and from the stack will remain whatever cannot be inserted.
+     */
+    fun insertIntoEmptySlots(stack: ItemStack)
+
+    /**
+     * WILL NOT modify the stack.
+     * @param amount How much needs to be extracted
+     * @return How much was extracted
+     */
+    fun extract(exampleStack: ItemStack, amount: Int): Int
 }
 
 interface NetworkNode
+

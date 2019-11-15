@@ -45,13 +45,13 @@ minecraft {
 
 repositories {
     maven(url = "https://mod-buildcraft.com/maven")
-    mavenLocal()
     jcenter()
     maven(url = "http://maven.fabricmc.net/")
     maven(url = "https://minecraft.curseforge.com/api/maven")
     maven(url = "http://tehnut.info/maven")
     maven(url = "https://maven.jamieswhiteshirt.com/libs-release/")
     maven(url = "http://server.bbkr.space:8081/artifactory/libs-release/")
+    maven(url = "https://maven.abusedmaster.xyz")
 }
 
 dependencies {
@@ -62,6 +62,8 @@ dependencies {
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
     modDependency("alexiil.mc.lib:libmultipart-all:${prop("lib_multipart_version")}")
+    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-base:2.0.3")
+    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-item:2.0.3")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
         exclude(group = "io.github.prospector")
@@ -73,7 +75,7 @@ dependencies {
 
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
-    mappings("net.fabricmc:yarn:1.14.4+build.local:v2")
+    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
     modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }

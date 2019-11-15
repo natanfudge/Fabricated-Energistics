@@ -1,5 +1,6 @@
 package fe.block
 
+import fe.network.NetworkNode
 import fe.util.BlockStateUpdate
 import net.minecraft.block.Block
 import net.minecraft.block.BlockRenderLayer
@@ -12,7 +13,7 @@ import net.minecraft.state.property.BooleanProperty
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-abstract class CableBlock(val color: Color) : Block(Settings.of(Material.GLASS)) {
+abstract class CableBlock(val color: Color) : Block(Settings.of(Material.GLASS)), NetworkNode {
     companion object {
         object Connection {
             val Down: BooleanProperty = BooleanProperty.of("down")

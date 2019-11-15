@@ -167,7 +167,7 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
         if (!slot.hasStack()) return false
         val toTransfer = slot.stack
         if (slot.inventory === blockInventory) {
-            val extracted = networkGuiInventory.extract(toTransfer, toTransfer.maxCount)
+            val extracted = networkGuiInventory.extractFromNetwork(toTransfer, toTransfer.maxCount)
             val amountRemaining = playerInventory.insert(extracted)
             // Put back what the player can't fit
             if (amountRemaining.count > 0) networkGuiInventory.insertToNetwork(amountRemaining)
@@ -187,7 +187,7 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
             // Pick up
             val amountToTake =
                 if (leftClick) (toTransfer.maxTransferAmount / 2.0).roundToInt() else toTransfer.maxTransferAmount
-            cursorStack = networkGuiInventory.extract(toTransfer, amountToTake)
+            cursorStack = networkGuiInventory.extractFromNetwork(toTransfer, amountToTake)
 
         } else {
             moveFromPlayerHandToNetwork(if (leftClick) cursorStack.copy(count = 1) else cursorStack)
@@ -207,7 +207,7 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
 
     private fun PlayerEntity.drop(slot: Slot, ctrlClick: Boolean): Boolean {
         val toDrop = slot.stack
-        val extracted = networkGuiInventory.extract(toDrop, amount = if (ctrlClick) toDrop.maxTransferAmount else 1)
+        val extracted = networkGuiInventory.extractFromNetwork(toDrop, amount = if (ctrlClick) toDrop.maxTransferAmount else 1)
         return if (extracted.count > 0) {
             dropItem(extracted, true)
             true
@@ -225,7 +225,7 @@ class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInven
         val swappedStack = playerInventory.getInvStack(toolbarSlot)
 
         if(slot.inventory == blockInventory){
-            val extracted = networkGuiInventory.extract(slot.stack,slot.stack.maxTransferAmount)
+            val extracted = networkGuiInventory.extractFromNetwork(slot.stack,slot.stack.maxTransferAmount)
             val amountLeftAfterInsertion = networkGuiInventory.insertToNetwork(swappedStack).count
             playerInventory.setInvStack(toolbarSlot,extracted)
             if(amountLeftAfterInsertion > 0) playerInventory.insert(swappedStack.copy(amountLeftAfterInsertion))

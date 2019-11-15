@@ -4,6 +4,7 @@ import fe.blockentity.MeChestBlockEntity
 import fe.client.gui.MeChestScreenController
 import fe.container.NetworkInventoryScreenController
 import fe.modId
+import fe.network.NetworkNode
 import fe.util.BlockWithBlockEntity
 import fe.util.openGui
 import net.minecraft.block.BlockState
@@ -15,7 +16,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 
-object MeChestBlock : BlockWithBlockEntity(Settings.of(Material.METAL), ::MeChestBlockEntity) {
+object MeChestBlock : BlockWithBlockEntity(Settings.of(Material.METAL), ::MeChestBlockEntity),NetworkNode {
     val Id = modId("chest")
     override fun activate(
         state: BlockState,

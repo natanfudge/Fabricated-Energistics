@@ -2,6 +2,8 @@ package fe.blockentity
 
 import fe.block.MeChestBlock
 import fe.item.StorageDisk
+import fe.network.DiskStack
+import fe.network.Network
 import fe.network.NetworkGuiInventory
 import fe.util.Builders
 import fe.util.ImplementedInventory
@@ -22,7 +24,7 @@ class MeChestBlockEntity : SyncedBlockEntity(Type), ImplementedInventory, BlockE
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(1, ItemStack.EMPTY)
 
     fun getNetworkInventory(): NetworkGuiInventory =
-        NetworkGuiInventory(items)
+        NetworkGuiInventory(Network(items.map { DiskStack(it) }.toMutableList()))
 
     override fun markDirty() {
         super<SyncedBlockEntity>.markDirty()
