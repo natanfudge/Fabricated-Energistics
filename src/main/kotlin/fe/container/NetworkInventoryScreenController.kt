@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
 private const val RightClick = 1
 
 private fun BlockContext.getNetworkInventory(): NetworkGuiInventory =
-    run(BiFunction<World, BlockPos, NetworkGuiInventory> { world, pos ->
+    run(BiFunction { world : World, pos : BlockPos ->
         (world.getBlockEntity(pos) as MeChestBlockEntity).getNetworkInventory()
     }).orElseThrow { RuntimeException("Could not find network") }
 //TODO: test taking only 1

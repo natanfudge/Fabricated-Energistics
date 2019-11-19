@@ -62,8 +62,8 @@ dependencies {
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
     modDependency("alexiil.mc.lib:libmultipart-all:${prop("lib_multipart_version")}")
-    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-base:2.0.3")
-    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-item:2.0.3")
+    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-base:${prop("cca_version")}")
+    modImplementation ("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-item:${prop("cca_version")}")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}") {
         exclude(group = "io.github.prospector")

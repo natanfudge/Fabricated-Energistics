@@ -25,16 +25,16 @@ object Builders {
      * @param blocks The blocks that will have the [BlockEntity].
      * @param blockEntitySupplier Pass a function that simply returns a new [BlockEntity] instance.
      */
-    fun <T : BlockEntity> blockEntityType(vararg blocks: Block, blockEntitySupplier: () -> T): BlockEntityType<T> =
+    fun <T : BlockEntity, B: Block> blockEntityType(vararg blocks: B, blockEntitySupplier: () -> T): BlockEntityType<T> =
             BlockEntityType.Builder.create(blockEntitySupplier, blocks).build(null)
 
-    /**
-     * Creates a new [BlockEntityType]
-     * @param blocks The blocks that will have the [BlockEntity].
-     * @param blockEntitySupplier Pass a function that simply returns a new [BlockEntity] instance.
-     */
-    fun <T : BlockEntity> blockEntityType(blocks: List<Block>, blockEntitySupplier: () -> T): BlockEntityType<T> =
-            BlockEntityType.Builder.create(blockEntitySupplier, blocks.toTypedArray()).build(null)
+//    /**
+//     * Creates a new [BlockEntityType]
+//     * @param blocks The blocks that will have the [BlockEntity].
+//     * @param blockEntitySupplier Pass a function that simply returns a new [BlockEntity] instance.
+//     */
+//    inline fun <T : BlockEntity, reified B : Block> blockEntityType(blocks: List<B>, noinline blockEntitySupplier: () -> T): BlockEntityType<T> =
+//            BlockEntityType.Builder.create(blockEntitySupplier, blocks.toTypedArray()).build(null)
 
     /**
      * Creates a new [Material]

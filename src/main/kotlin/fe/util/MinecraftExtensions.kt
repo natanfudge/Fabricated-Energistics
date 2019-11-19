@@ -4,36 +4,27 @@ package fe.util
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.ChestBlock
-import net.minecraft.block.InventoryProvider
-import net.minecraft.block.entity.ChestBlockEntity
 import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SidedInventory
-import net.minecraft.item.ItemConvertible
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.LongTag
-import net.minecraft.recipe.Ingredient
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
-import net.minecraft.util.DefaultedList
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.IWorld
 import net.minecraft.world.World
-import kotlin.math.min
 import kotlin.math.sqrt
-
 
 
 val BlockPos.xz get() = "($x,$z)"
 
 fun BlockPos.distanceFrom(otherPos: Vec3d) =
     sqrt((otherPos.x - this.x).squared() + (otherPos.y - this.y).squared() + (otherPos.z - this.z).squared())
+
+fun BlockPos.adjacentPositions() = listOf(up(), down(), south(), west(), north(), east())
 
 operator fun BlockPos.plus(other: BlockPos): BlockPos = this.add(other)
 operator fun BlockPos.plus(vec3d: Vec3d): Vec3d = this.toVec3d() + vec3d
@@ -85,8 +76,6 @@ fun IWorld.dropItemStack(stack: ItemStack, pos: Vec3d): ItemEntity =
     ItemEntity(world, pos.x, pos.y, pos.z, stack).also {
         world.spawnEntity(it)
     }
-
-
 
 
 /**

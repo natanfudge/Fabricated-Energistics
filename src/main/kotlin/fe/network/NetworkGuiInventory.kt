@@ -1,12 +1,9 @@
 package fe.network
 
-import fe.item.StorageDisk
 import fe.util.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
-import net.minecraft.util.DefaultedList
-import java.lang.Integer.min
 
 private object Keys {
     const val Inventory = "disk_inventory"
@@ -18,7 +15,7 @@ private object Keys {
 private const val StacksShownAtAtime = 45
 
 class NetworkGuiInventory(
-    private val network: Network,
+    private val network: MeNetwork,
     var filter: (ItemStack) -> Boolean = { true },
     var sortBy: (ItemStack, ItemStack) -> Int = { stackA, StackB ->
         stackA.item.name.asFormattedString().compareTo(StackB.item.name.asFormattedString())

@@ -1,5 +1,6 @@
 package fe.client.gui
 
+//import fe.block.DriveBayBlock
 import fe.block.DriveBayBlock
 import fe.util.ExitableScreen
 import fe.util.grid
@@ -25,6 +26,7 @@ class DriveBayScreenController(syncId: Int, playerInventory: PlayerInventory, co
     override fun canUse(entity: PlayerEntity): Boolean {
         return blockInventory.canPlayerUseInv(entity)
     }
+
 
     init {
         val rootPanel = WGridPanel(3)

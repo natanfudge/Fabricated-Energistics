@@ -2,32 +2,29 @@ package fe.blockentity
 
 import fe.block.MeChestBlock
 import fe.item.StorageDisk
-import fe.network.DiskStack
-import fe.network.Network
+import fe.network.InactiveNetwork
+import fe.network.NetworkBlockEntity
 import fe.network.NetworkGuiInventory
 import fe.util.Builders
 import fe.util.ImplementedInventory
-import fe.util.SyncedBlockEntity
 import fe.util.itemStackList
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.DefaultedList
 
 
-class MeChestBlockEntity : SyncedBlockEntity(Type), ImplementedInventory, BlockEntityClientSerializable {
-    companion object {
-        val Type = Builders.blockEntityType(MeChestBlock) { MeChestBlockEntity() }
-    }
+class MeChestBlockEntity : NetworkBlockEntity(MeChestBlock), ImplementedInventory, BlockEntityClientSerializable {
+
 
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(1, ItemStack.EMPTY)
 
-    fun getNetworkInventory(): NetworkGuiInventory =
-        NetworkGuiInventory(Network(items.map { DiskStack(it) }.toMutableList()))
+    fun getNetworkInventory(): NetworkGuiInventory = NetworkGuiInventory(network ?: InactiveNetwork)
 
     override fun markDirty() {
-        super<SyncedBlockEntity>.markDirty()
+        super<NetworkBlockEntity>.markDirty()
     }
 
     override fun isValidInvStack(slot: Int, stack: ItemStack) = stack.item is StorageDisk
@@ -48,10 +45,13 @@ class MeChestBlockEntity : SyncedBlockEntity(Type), ImplementedInventory, BlockE
         }
     }
 
+    override fun toClientTag(tag: CompoundTag): CompoundTag = toTag(tag)
+
     override fun toTag(tag: CompoundTag): CompoundTag {
         Inventories.toTag(tag, items)
         return super.toTag(tag)
     }
+
 
 }
 

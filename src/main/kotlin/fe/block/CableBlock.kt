@@ -1,7 +1,15 @@
 package fe.block
 
-import fe.network.NetworkNode
+import alexiil.mc.lib.multipart.api.MultipartContainer
+import alexiil.mc.lib.multipart.api.MultipartContainer.MultipartCreator
+import alexiil.mc.lib.multipart.api.MultipartHolder
+import alexiil.mc.lib.multipart.api.NativeMultipart
+import fe.blockentity.CableBlockEntity
+import fe.network.NetworkBlock
+import fe.part.FeParts
+import fe.part.PartTank
 import fe.util.BlockStateUpdate
+import fe.util.BlockWithBlockEntity
 import net.minecraft.block.Block
 import net.minecraft.block.BlockRenderLayer
 import net.minecraft.block.BlockState
@@ -13,7 +21,9 @@ import net.minecraft.state.property.BooleanProperty
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-abstract class CableBlock(val color: Color) : Block(Settings.of(Material.GLASS)), NetworkNode {
+abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Material.GLASS),::CableBlockEntity), NetworkBlock,NativeMultipart {
+
+
     companion object {
         object Connection {
             val Down: BooleanProperty = BooleanProperty.of("down")
@@ -72,7 +82,8 @@ abstract class CableBlock(val color: Color) : Block(Settings.of(Material.GLASS))
         )
         var state = defaultState
         for ((sidePos, sideConnection) in sides) {
-            val connected = !world.getBlockState(sidePos).isAir
+            val blockState = world.getBlockState(sidePos)
+            val connected = !blockState.isAir && blockState.block is NetworkBlock
             state = state.with(sideConnection, connected)
         }
         world.setBlockState(pos, state, BlockStateUpdate.UpdateListeners)
@@ -100,14 +111,34 @@ abstract class CableBlock(val color: Color) : Block(Settings.of(Material.GLASS))
     }
 }
 
-class CoveredCableBlock(color: Color) : CableBlock(color) {
+class CoveredCableBlock(color: Color) : CableBlock(color),NativeMultipart {
     companion object {
         val All = Color.values().map { CoveredCableBlock(it) }
+    }
+
+    override fun getMultipartConversion(
+        world: World?,
+        pos: BlockPos?,
+        state: BlockState?
+    ): List<MultipartCreator> {
+        val creator = MultipartCreator { holder: MultipartHolder? ->
+            val part = PartTank(FeParts.TANK, holder)
+            part
+        }
+        return listOf(creator)
     }
 }
 
 class GlassCableBlock(color: Color) : CableBlock(color) {
     companion object {
         val All = Color.values().map { GlassCableBlock(it) }
+    }
+
+    override fun getMultipartConversion(
+        world: World?,
+        pos: BlockPos?,
+        state: BlockState?
+    ): MutableList<MultipartContainer.MultipartCreator> {
+        TODO("not implemented")
     }
 }

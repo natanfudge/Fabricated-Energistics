@@ -32,8 +32,6 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
                 64000
             ) to "storage_cell_64k"
         )
-
-
     }
 
     private val totalMaxStackAmount : Int = differentItemsCapacity * perItemCapacity
@@ -60,9 +58,5 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
         )
 
     }
-    // x of y bytes used
-    // a of b types
-
-
 }
 

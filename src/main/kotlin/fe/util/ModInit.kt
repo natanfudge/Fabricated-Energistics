@@ -57,8 +57,12 @@ class CommonModInitializationContext(
         init(RegistryContext(modId, registry))
     }
 
-    inline fun registerBlocksWithItemBlocks(init: BlockWithItemRegistryContext.() -> Unit) {
+    inline fun registerBlocksWithItemBlocks(init: BlockWithItemRegistryContext<Block>.() -> Unit) {
         init(BlockWithItemRegistryContext(modId, group))
+    }
+
+    inline fun registerBlocksTilesAndItems(init: BlockItemEntityRegistryContext.() -> Unit) {
+        init(BlockItemEntityRegistryContext(modId, group))
     }
 
     fun registerContainer(containerId: Identifier, factory: (Int, PlayerInventory, BlockContext) -> Container) {
@@ -142,20 +146,44 @@ class ClientModInitializationContext(@PublishedApi internal val modId: String) {
 }
 
 
-class RegistryContext<T>(private val namespace: String, private val registry: Registry<T>) {
-    infix fun T.withId(name: String): T = Registry.register(registry, Identifier(namespace, name), this)
-    infix fun T.withId(id: Identifier): T = Registry.register(registry, id, this)
+open class RegistryContext<T>(private val namespace: String, private val registry: Registry<in T>) {
+    // Kotlin won't let calling T.withId directly inside children
+    protected open fun withIdWorkaround(toRegister: T, id: Identifier): T = Registry.register(registry, id, toRegister)
+
+    infix fun T.withId(name: String): T = withId(Identifier(namespace, name))
+    infix fun T.withId(id: Identifier): T = withIdWorkaround(this, id)
 }
 
-class BlockWithItemRegistryContext(private val namespace: String, private val group: ItemGroup?) {
-    infix fun Block.withId(name: String) = withId(Identifier(namespace, name))
+open class BlockWithItemRegistryContext<T : Block>(namespace: String, private val group: ItemGroup?) :
+    RegistryContext<T>(namespace, Registry.BLOCK) {
+//    infix fun Block.withId(name: String) = withId(Identifier(namespace, name))
 
-    infix fun Block.withId(id: Identifier) {
-        Registry.register(Registry.BLOCK, id, this)
+    override fun withIdWorkaround(toRegister: T, id: Identifier): T {
         Registry.register(
             Registry.ITEM,
             id,
-            BlockItem(this, Item.Settings().group(group ?: ItemGroup.MISC))
+            BlockItem(toRegister, Item.Settings().group(group ?: ItemGroup.MISC))
         )
+        return super.withIdWorkaround(toRegister, id)
+    }
+}
+
+/**
+ * Registry for Block, BlockEntity, and Item.
+ */
+class BlockItemEntityRegistryContext(namespace: String, group: ItemGroup?) :
+    BlockWithItemRegistryContext<BlockWithBlockEntity>(namespace, group) {
+//    override fun BlockWithBlockEntity.withId(id: Identifier): BlockWithBlockEntity {
+//        super.
+//    }
+
+    //TODO: a way to register multiple blocks with one BE
+    override fun withIdWorkaround(toRegister: BlockWithBlockEntity, id: Identifier): BlockWithBlockEntity {
+        Registry.register(
+            Registry.BLOCK_ENTITY,
+            id,
+            toRegister.entityType
+        )
+        return super.withIdWorkaround(toRegister, id)
     }
 }

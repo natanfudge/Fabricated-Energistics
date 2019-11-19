@@ -14,6 +14,7 @@ import nerdhub.cardinal.components.api.ComponentRegistry
 import nerdhub.cardinal.components.api.ComponentType
 import nerdhub.cardinal.components.api.component.Component
 import nerdhub.cardinal.components.api.component.extension.CloneableComponent
+import nerdhub.cardinal.components.api.event.ItemComponentCallback
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.DefaultedList
@@ -21,10 +22,11 @@ import net.minecraft.util.DefaultedList
 
 class DiskStack(private val stack: ItemStack) : ItemHolder {
     companion object {
-        val DiskInventory: ComponentType<InventoryComponent> = ComponentRegistry.INSTANCE.registerIfAbsent(
+         val DiskInventory: ComponentType<InventoryComponent> = ComponentRegistry.INSTANCE.registerIfAbsent(
             modId("disk-inventory"),
             InventoryComponent::class.java
         )
+
     }
 
     init {

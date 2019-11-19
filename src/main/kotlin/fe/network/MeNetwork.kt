@@ -2,9 +2,32 @@ package fe.network
 
 import net.minecraft.item.ItemStack
 
-class Network(private val itemHolders: MutableList<ItemHolder>) {
-    //    private val itemHolders = mutableListOf<ItemHolder>()
+class MeNetwork {
+    companion object {
+        /**
+         * Returns null if all of the networks are null
+         */
+        fun combineNetworks(networks: List<MeNetwork?>): MeNetwork? {
+            val existingNetworks = networks.filterNotNull()
+            if (existingNetworks.isEmpty()) return null
+            val firstNetwork = existingNetworks[0]
+            // They are all the same network
+            if (existingNetworks.all { it == firstNetwork }) return firstNetwork
+            val combinedNetwork = MeNetwork()
+            for (network in existingNetworks) {
+                combinedNetwork.itemHolders.addAll(network.itemHolders)
+            }
+            return combinedNetwork
+        }
+    }
+
+    private val itemHolders = mutableListOf<ItemHolder>()
+    val isActive: Boolean = false
     fun allStoredItems(): List<ItemStack> = itemHolders.flatMap { it.listContents() }
+
+    fun contributeItemHolder(itemHolder: ItemHolder) {
+        itemHolders.add(itemHolder)
+    }
 
     /**
      * The inserted stack will NOT be modified
@@ -43,6 +66,8 @@ class Network(private val itemHolders: MutableList<ItemHolder>) {
     }
 }
 
+val InactiveNetwork = MeNetwork()
+
 
 interface ItemHolder {
     /**
@@ -67,6 +92,4 @@ interface ItemHolder {
      */
     fun extract(exampleStack: ItemStack, amount: Int): Int
 }
-
-interface NetworkNode
 

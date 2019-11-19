@@ -2,6 +2,7 @@ package fe.blockentity
 
 import fe.block.DriveBayBlock
 import fe.item.StorageDisk
+import fe.network.NetworkBlockEntity
 import fe.util.Builders
 import fe.util.ImplementedInventory
 import net.minecraft.block.entity.BlockEntity
@@ -11,10 +12,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.DefaultedList
 
 
-class DriveBayBlockEntity : BlockEntity(Type), ImplementedInventory {
-    companion object {
-        val Type = Builders.blockEntityType(DriveBayBlock) { DriveBayBlockEntity() }
-    }
+class DriveBayBlockEntity : NetworkBlockEntity(DriveBayBlock), ImplementedInventory {
 
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(10, ItemStack.EMPTY)
 
