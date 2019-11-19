@@ -5,7 +5,6 @@ package fe
 import fe.block.*
 //import fe.blockentity.DriveBayBlockEntity
 //import fe.blockentity.EnergyAcceptorBlockEntity
-import fe.blockentity.MeChestBlockEntity
 import fe.client.gui.*
 import fe.container.NetworkInventoryScreenController
 import fe.item.StorageDisk
@@ -36,7 +35,7 @@ const val LogId = "FE"
 fun modId(path: String) = Identifier(ModId, path)
 fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
 
-    registerBlocksTilesAndItems {
+    registerBlocksBEsAndItems {
         DriveBayBlock withId DriveBayBlock.Id
         MeChestBlock withId MeChestBlock.Id
         EnergyAcceptorBlock withId EnergyAcceptorBlock.Id

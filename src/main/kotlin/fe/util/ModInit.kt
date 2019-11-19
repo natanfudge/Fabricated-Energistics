@@ -61,7 +61,7 @@ class CommonModInitializationContext(
         init(BlockWithItemRegistryContext(modId, group))
     }
 
-    inline fun registerBlocksTilesAndItems(init: BlockItemEntityRegistryContext.() -> Unit) {
+    inline fun registerBlocksBEsAndItems(init: BlockItemEntityRegistryContext.() -> Unit) {
         init(BlockItemEntityRegistryContext(modId, group))
     }
 
