@@ -9,6 +9,9 @@ import kotlin.math.max
 
 infix fun IntRange.by(range: IntRange): List<Pair<Int, Int>> = this.flatMap { x -> range.map { y -> Pair(x, y) } }
 
+fun<K,V> buildMap(init : MutableMap<K,V>.() -> Unit) = mutableMapOf<K,V>().apply(init)
+fun<T> buildList(init : MutableList<T>.() -> Unit) = mutableListOf<T>().apply(init)
+
 operator fun Pair<Int, Int>.rangeTo(that: Pair<Int, Int>) = object : Iterable<Pair<Int, Int>> {
     override fun iterator() = object : Iterator<Pair<Int, Int>> {
         var i = this@rangeTo.first

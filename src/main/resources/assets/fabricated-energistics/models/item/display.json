@@ -1,5 +1,5 @@
 {
-    "parent": "fabricated-energistics:item/part/part",
+    "parent": "fabricated-energistics:item/base/part",
     "textures": {
         "sides": "fabricated-energistics:parts/monitor_sides",
         "back": "fabricated-energistics:parts/monitor_back",

@@ -14,6 +14,8 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.IWorld
 import net.minecraft.world.World
 import kotlin.math.sqrt
@@ -30,6 +32,10 @@ operator fun BlockPos.plus(other: BlockPos): BlockPos = this.add(other)
 operator fun BlockPos.plus(vec3d: Vec3d): Vec3d = this.toVec3d() + vec3d
 operator fun BlockPos.minus(other: BlockPos): BlockPos = this.subtract(other)
 operator fun BlockPos.minus(other: Vec3d): Vec3d = this.toVec3d().subtract(other)
+
+operator fun VoxelShape.plus(other : VoxelShape) : VoxelShape = VoxelShapes.union(this,other)
+
+fun VoxelShape.union(vararg others :  VoxelShape) : VoxelShape = VoxelShapes.union(this,*others)
 
 fun BlockPos.toVec3d() = Vec3d(this)
 

@@ -1,0 +1,8 @@
+{
+    "parent": "fabricated-energistics:block/display/display_off",
+    "textures": {
+        "lightsBright": "fabricated-energistics:parts/terminal_bright",
+        "lightsMedium": "fabricated-energistics:parts/terminal_medium",
+        "lightsDark": "fabricated-energistics:parts/terminal_dark"
+    }
+}

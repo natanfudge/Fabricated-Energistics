@@ -19,7 +19,6 @@ import net.minecraft.world.World
 //TODO: probably remove NetworkBlock, and then rename networkblockentity to networknode
 object EnergyAcceptorBlock : BlockWithBlockEntity(Settings.of(Material.METAL), ::EnergyAcceptorBlockEntity),
     NetworkBlock {
-    val Id = "energy_acceptor"
 
     override fun onPlaced(
         world: World,

@@ -3,15 +3,12 @@
 package fe
 
 import fe.block.*
-//import fe.blockentity.DriveBayBlockEntity
-//import fe.blockentity.EnergyAcceptorBlockEntity
 import fe.client.gui.*
 import fe.container.NetworkInventoryScreenController
 import fe.item.StorageDisk
 import fe.network.DiskStack
 import fe.network.InventoryComponentImpl
-import fe.part.FeParts
-//import fe.part.FeParts
+import fe.part.CablePart
 import fe.util.initClientOnly
 import fe.util.initCommon
 import fe.util.itemStackList
@@ -37,8 +34,9 @@ fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
 
     registerBlocksBEsAndItems {
         DriveBayBlock withId DriveBayBlock.Id
-        MeChestBlock withId MeChestBlock.Id
-        EnergyAcceptorBlock withId EnergyAcceptorBlock.Id
+        MeChestBlock withId "chest"
+        EnergyAcceptorBlock withId "energy_acceptor"
+        TerminalBlock withId "terminal"
 
         for (cable in CoveredCableBlock.All.take(1)) {
             cable withId "cable_covered_" + cable.color.lowercase
@@ -58,8 +56,7 @@ fun init() = initCommon(ModId, FabricatedEnergistics.Group) {
         }
     }
 
-    FeParts.load()
-
+    CablePart.Definition.register()
 
     registerContainer(DriveBayBlock.Id, ::DriveBayScreenController)
     registerContainer(MeChestScreenController.Id, ::MeChestScreenController)

@@ -1,5 +1,5 @@
 {
-    "parent": "fabricated-energistics:item/part/display",
+    "parent": "fabricated-energistics:item/display",
     "textures": {
         "front": "fabricated-energistics:item/part/terminal",
         "front_bright": "fabricated-energistics:parts/terminal_bright",

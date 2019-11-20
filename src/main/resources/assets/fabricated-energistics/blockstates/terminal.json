@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "on=true": {
+      "model": "fabricated-energistics:block/display/terminal_on"
+    },
+    "on=false": {
+      "model": "fabricated-energistics:block/display/terminal_off"
+    }
+  }
+}

@@ -17,7 +17,6 @@ import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 
 object MeChestBlock : BlockWithBlockEntity(Settings.of(Material.METAL), ::MeChestBlockEntity), NetworkBlock {
-    val Id = modId("chest")
     override fun activate(
         state: BlockState,
         world: World,

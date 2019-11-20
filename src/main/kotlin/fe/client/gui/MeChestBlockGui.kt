@@ -5,7 +5,8 @@ import fe.modId
 import fe.util.ExitableScreen
 import fe.util.grid
 import io.github.cottonmc.cotton.gui.CottonScreenController
-import io.github.cottonmc.cotton.gui.widget.*
+import io.github.cottonmc.cotton.gui.widget.WGridPanel
+import io.github.cottonmc.cotton.gui.widget.WLabel
 import net.minecraft.container.BlockContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -22,7 +23,7 @@ class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, con
         getBlockPropertyDelegate(context)
     ) {
 
-    companion object{
+    companion object {
         val Id = modId("chest_drives")
     }
 
@@ -35,7 +36,7 @@ class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, con
         this.rootPanel = rootPanel
         rootPanel.add(WLabel(TranslatableText(MeChestBlock.translationKey), WLabel.DEFAULT_TEXT_COLOR), 0, 0)
         grid(rootPanel, blockInventory) {
-            inventorySlot(4,2)
+            inventorySlot(4, 2)
         }
 
         rootPanel.add(createPlayerInventoryPanel(), 0, 5)
@@ -43,8 +44,6 @@ class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, con
         rootPanel.validate(this)
     }
 }
-
-
 
 
 class MeChestScreen(container: MeChestScreenController, player: PlayerEntity) :

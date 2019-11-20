@@ -1,27 +1,29 @@
 package fe.block
 
-import alexiil.mc.lib.multipart.api.MultipartContainer
-import alexiil.mc.lib.multipart.api.MultipartContainer.MultipartCreator
-import alexiil.mc.lib.multipart.api.MultipartHolder
-import alexiil.mc.lib.multipart.api.NativeMultipart
+//import fe.block.CableBlock.Companion.Connection.*
 import fe.blockentity.CableBlockEntity
+import fe.client.model.*
 import fe.network.NetworkBlock
-import fe.part.FeParts
-import fe.part.PartTank
 import fe.util.BlockStateUpdate
 import fe.util.BlockWithBlockEntity
+import fe.util.buildList
+import fe.util.plus
 import net.minecraft.block.Block
 import net.minecraft.block.BlockRenderLayer
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
+import net.minecraft.entity.EntityContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.state.StateFactory
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
-abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Material.GLASS),::CableBlockEntity), NetworkBlock,NativeMultipart {
+sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Material.GLASS), ::CableBlockEntity), NetworkBlock/*,
+    NativeMultipart*/ {
 
 
     companion object {
@@ -36,6 +38,45 @@ abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(M
             val All = listOf(Down, Up, North, South, East, West)
         }
     }
+
+    init {
+        var default = stateFactory.defaultState
+        for (connection in Connection.All) {
+            default = default.with(connection, false)
+        }
+        defaultState = default
+    }
+
+    private fun allStates(options: List<BooleanProperty>): List<BlockState> {
+        var currentLayer = listOf(defaultState)
+        for (option in options) {
+            currentLayer = buildList<BlockState> {
+                for (state in currentLayer) {
+                    add(state.with(option, false))
+                    add(state.with(option, true))
+                }
+            }
+        }
+
+        return currentLayer
+    }
+
+
+    private var stateToShape: Map<BlockState, VoxelShape> = allStates(Connection.All).map { state ->
+        var shape = coreShape
+        if (state.get(Connection.Up)) shape += upShape
+        if (state.get(Connection.Down)) shape += downShape
+        if (state.get(Connection.North)) shape += northShape
+        if (state.get(Connection.South)) shape += southShape
+        if (state.get(Connection.East)) shape += eastShape
+        if (state.get(Connection.West)) shape += westShape
+        state to shape
+    }.toMap()
+
+    override fun getOutlineShape(state: BlockState, view: BlockView, pos: BlockPos, ePos: EntityContext): VoxelShape {
+        return stateToShape[state] ?: error("Could not find blockstate = $state in map of all blockstates: $stateToShape")
+    }
+
 
     enum class Color(val lowercase: String) {
         Black("black"),
@@ -59,13 +100,7 @@ abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(M
 
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
-    init {
-        var default = stateFactory.defaultState
-        for (connection in Connection.All) {
-            default = default.with(connection, false)
-        }
-        defaultState = default
-    }
+
 
     override fun appendProperties(builder: StateFactory.Builder<Block, BlockState>) {
         builder.add(*Connection.All.toTypedArray())
@@ -80,13 +115,14 @@ abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(M
             pos.east() to Connection.East,
             pos.west() to Connection.West
         )
-        var state = defaultState
+        var newState = defaultState
         for ((sidePos, sideConnection) in sides) {
             val blockState = world.getBlockState(sidePos)
             val connected = !blockState.isAir && blockState.block is NetworkBlock
-            state = state.with(sideConnection, connected)
+            newState = newState.with(sideConnection, connected)
         }
-        world.setBlockState(pos, state, BlockStateUpdate.UpdateListeners)
+
+        if (newState != world.getBlockState(pos)) world.setBlockState(pos, newState, BlockStateUpdate.UpdateListeners)
     }
 
     override fun onPlaced(
@@ -111,34 +147,35 @@ abstract class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(M
     }
 }
 
-class CoveredCableBlock(color: Color) : CableBlock(color),NativeMultipart {
+class CoveredCableBlock(color: Color) : CableBlock(color) {
     companion object {
         val All = Color.values().map { CoveredCableBlock(it) }
     }
 
-    override fun getMultipartConversion(
-        world: World?,
-        pos: BlockPos?,
-        state: BlockState?
-    ): List<MultipartCreator> {
-        val creator = MultipartCreator { holder: MultipartHolder? ->
-            val part = PartTank(FeParts.TANK, holder)
-            part
-        }
-        return listOf(creator)
-    }
+    lateinit var x: String
+
+
+//    override fun getRayTraceShape(state: BlockState?, view: BlockView?, pos: BlockPos?): VoxelShape {
+//        return super.getRayTraceShape(state, view, pos)
+//    }
+
+//    override fun getMultipartConversion(
+//        world: World?,
+//        pos: BlockPos?,
+//        state: BlockState?
+//    ): List<MultipartCreator> = listOf(MultipartCreator { CablePart(CablePart.Definition, it) })
 }
 
-class GlassCableBlock(color: Color) : CableBlock(color) {
-    companion object {
-        val All = Color.values().map { GlassCableBlock(it) }
-    }
-
-    override fun getMultipartConversion(
-        world: World?,
-        pos: BlockPos?,
-        state: BlockState?
-    ): MutableList<MultipartContainer.MultipartCreator> {
-        TODO("not implemented")
-    }
-}
+//class GlassCableBlock(color: Color) : CableBlock(color) {
+//    companion object {
+//        val All = Color.values().map { GlassCableBlock(it) }
+//    }
+//
+//    override fun getMultipartConversion(
+//        world: World?,
+//        pos: BlockPos?,
+//        state: BlockState?
+//    ): MutableList<MultipartContainer.MultipartCreator> {
+//        TODO("not implemented")
+//    }
+//}
