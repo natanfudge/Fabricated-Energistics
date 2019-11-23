@@ -1,7 +1,7 @@
 package fe.util
 
 import drawer.ForItemStack
-import drawer.NbtFormat
+import drawer.nbt.NbtFormat
 import kotlinx.serialization.list
 import net.minecraft.block.ChestBlock
 import net.minecraft.block.InventoryProvider
