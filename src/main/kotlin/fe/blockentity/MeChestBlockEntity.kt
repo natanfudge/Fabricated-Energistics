@@ -1,15 +1,11 @@
 package fe.blockentity
 
+import fabricktx.api.ImplementedInventory
+import fabricktx.api.itemStackList
 import fe.block.MeChestBlock
 import fe.item.StorageDisk
-import fe.network.InactiveNetwork
-import fe.network.NetworkBlockEntity
-import fe.network.NetworkGuiInventory
-import fe.util.Builders
-import fe.util.ImplementedInventory
-import fe.util.itemStackList
+import fe.network.*
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
-import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -21,7 +17,9 @@ class MeChestBlockEntity : NetworkBlockEntity(MeChestBlock), ImplementedInventor
 
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(1, ItemStack.EMPTY)
 
-    fun getNetworkInventory(): NetworkGuiInventory = NetworkGuiInventory(network ?: InactiveNetwork)
+    fun getNetworkInventory(): NetworkGuiInventory = NetworkGuiInventory(network)
+
+    override fun contributeToNetwork(): ItemHolder = DiskStack { items[0] }
 
     override fun markDirty() {
         super<NetworkBlockEntity>.markDirty()

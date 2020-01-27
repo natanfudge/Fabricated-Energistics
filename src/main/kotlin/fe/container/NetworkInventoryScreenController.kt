@@ -1,13 +1,13 @@
 package fe.container
 
+import fabricktx.api.copy
+import fabricktx.api.insert
 import fe.block.MeChestBlock
 import fe.blockentity.MeChestBlockEntity
+import fe.client.gui.grid
 import fe.modId
 import fe.network.NetworkGuiInventory
-import fe.util.copy
-import fe.util.grid
-import fe.util.insert
-import io.github.cottonmc.cotton.gui.CottonScreenController
+import io.github.cottonmc.cotton.gui.CottonCraftingController
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
 import io.github.cottonmc.cotton.gui.widget.WLabel
 import net.minecraft.container.BlockContext
@@ -40,7 +40,7 @@ private enum class SpreadStage {
 }
 
 class NetworkInventoryScreenController(syncId: Int, playerInventory: PlayerInventory, context: BlockContext) :
-    CottonScreenController(
+    CottonCraftingController(
         null,
         syncId,
         playerInventory,

@@ -48,7 +48,7 @@ repositories {
     maven(url = "https://maven.jamieswhiteshirt.com/libs-release/")
     maven(url = "http://server.bbkr.space:8081/artifactory/libs-release/")
     maven(url = "https://maven.abusedmaster.xyz")
-    maven(url = "https://dl.bintray.com/shedaniel/autoconfig1u/")
+    maven(url = "https://dl.bintray.com/natanfudge/libs")
 }
 
 
@@ -57,20 +57,23 @@ dependencies {
 
     modDependency("net.fabricmc:fabric-language-kotlin:${prop("fabric_kotlin_version")}")
     modDependency("com.lettuce.fudge:fabric-drawer:${prop("drawer_version")}")
+    implementation("com.lettuce.fudge:fabric-ktx:${prop("ktx_version")}+$minecraft_version")
     modDependency("io.github.cottonmc:LibGui:${prop("libgui_version")}")
     modDependency("alexiil.mc.lib:libmultipart-all:${prop("lib_multipart_version")}")
     modDependency("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-base:${prop("cca_version")}")
     modDependency("com.github.NerdHubMC.Cardinal-Components-API:cardinal-components-item:${prop("cca_version")}")
+    modDependency("com.lettuce.fudge:artifice:${prop("artifice_version")}")
 
     devEnvMod("me.shedaniel:RoughlyEnoughItems:${prop("rei_version")}")
     devEnvMod("mcp.mobius.waila:Hwyla:${prop("waila_version")}")
-    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.14")
+    devEnvMod("com.jamieswhiteshirt:developer-mode:1.0.15")
     devEnvMod("gamemodeoverhaul:GamemodeOverhaul:1.0.1.0")
+    modDependency("com.lettuce.fudge:notenoughcrashes:1.1.2+1.15")
 }
 
 fun DependencyHandlerScope.fabric() {
     minecraft("com.mojang:minecraft:$minecraft_version")
-    mappings("net.fabricmc:yarn:${prop("yarn_mappings")}")
+    mappings("net.fabricmc:yarn:$minecraft_version+${prop("yarn_mappings")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${prop("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("fabric_version")}")
 }
@@ -198,4 +201,8 @@ publishing {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
 }

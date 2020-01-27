@@ -2,9 +2,7 @@ package fe.client.gui
 
 import fe.block.MeChestBlock
 import fe.modId
-import fe.util.ExitableScreen
-import fe.util.grid
-import io.github.cottonmc.cotton.gui.CottonScreenController
+import io.github.cottonmc.cotton.gui.CottonCraftingController
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
 import io.github.cottonmc.cotton.gui.widget.WLabel
 import net.minecraft.container.BlockContext
@@ -15,7 +13,7 @@ import net.minecraft.text.TranslatableText
 
 
 class MeChestScreenController(syncId: Int, playerInventory: PlayerInventory, context: BlockContext) :
-    CottonScreenController(
+    CottonCraftingController(
         RecipeType.SMELTING,
         syncId,
         playerInventory,

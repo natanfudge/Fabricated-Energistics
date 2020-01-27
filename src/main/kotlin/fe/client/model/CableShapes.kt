@@ -11,6 +11,7 @@ fun cube(xMin: Int, yMin: Int, zMin: Int, xMax: Int, yMax: Int, zMax: Int): Voxe
 
 val CableBlock.coreShape
     get() = when (this) {
+        //TODO: cover glass and other cases
         is CoveredCableBlock -> CableShapes.Covered.Core
     }
 val CableBlock.upShape

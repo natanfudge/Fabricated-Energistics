@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "fabricated-energistics:block/energy/energy_acceptor"
+        }
+    }
+}

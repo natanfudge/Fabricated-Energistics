@@ -1,6 +1,6 @@
 package fe.network
 
-import fe.util.*
+import fe.logWarning
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack
 private object Keys {
     const val Inventory = "disk_inventory"
 }
-
-
 
 
 private const val StacksShownAtAtime = 45
@@ -74,7 +72,6 @@ class NetworkGuiInventory(
     }
 
 
-
     private fun assignVisibleSlots(): MutableList<ItemStack> {
         //TODO: need to combine itemstacks of the same item
         val beforeInversion =
@@ -85,6 +82,14 @@ class NetworkGuiInventory(
 
         return result
     }
+
+    private fun MutableList<ItemStack>.fillWithEmptyStacksUntil(index: Int): MutableList<ItemStack> {
+        repeat(index - size) {
+            add(ItemStack.EMPTY)
+        }
+        return this
+    }
+
 
     private fun updateVisibleSlots() {
         visibleSlots = assignVisibleSlots()

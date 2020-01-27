@@ -4,23 +4,19 @@ import drawer.ForDefaultedList
 import drawer.ForItemStack
 import drawer.getFrom
 import drawer.put
+import fabricktx.api.*
 import fe.item.StorageDisk
 import fe.modId
-import fe.util.LogDebug
-import fe.util.copy
-import fe.util.equalsIgnoreCount
-import fe.util.itemStackList
 import nerdhub.cardinal.components.api.ComponentRegistry
 import nerdhub.cardinal.components.api.ComponentType
 import nerdhub.cardinal.components.api.component.Component
 import nerdhub.cardinal.components.api.component.extension.CloneableComponent
-import nerdhub.cardinal.components.api.event.ItemComponentCallback
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.DefaultedList
 
 
-class DiskStack(private val stack: ItemStack) : ItemHolder {
+class DiskStack(private val stackProvider: () -> ItemStack) : ItemHolder {
     companion object {
          val DiskInventory: ComponentType<InventoryComponent> = ComponentRegistry.INSTANCE.registerIfAbsent(
             modId("disk-inventory"),
@@ -30,17 +26,19 @@ class DiskStack(private val stack: ItemStack) : ItemHolder {
     }
 
     init {
-        require(stack.isEmpty || stack.item is StorageDisk)
-        if (LogDebug) {
+        require(stackProvider().isEmpty || stackProvider().item is StorageDisk)
+        inDebug {
             ensureNoHolesExist()
             ensureItemsAreGroupedTogether()
         }
+
     }
 
-    private val disk = stack.item as StorageDisk
+    private val disk = stackProvider().item as? StorageDisk
 
 
-    private fun getInventory() = DiskInventory.get(stack).inventory
+    private fun getInventory() : DefaultedList<ItemStack>
+            = if(stackProvider().isEmpty) itemStackList() else DiskInventory.get(stackProvider()).inventory
 
     // This is just a sanity check
     private fun ensureNoHolesExist() {
@@ -70,41 +68,41 @@ class DiskStack(private val stack: ItemStack) : ItemHolder {
         return nonEmpty
     }
 
-    override fun insertIntoPartiallyFilledSlots(insertedStack: ItemStack) {
+    override fun insertIntoPartiallyFilledSlots(stack: ItemStack) {
         for (diskStack in getInventory()) {
             // End of disk
             if (diskStack.isEmpty) break
 
-            if (insertedStack.equalsIgnoreCount(diskStack)) {
-                val amountAdded = Integer.min(disk.perItemCapacity - diskStack.count, insertedStack.count)
+            if (stack.equalsIgnoreCount(diskStack)) {
+                val amountAdded = Integer.min(disk!!.perItemCapacity - diskStack.count, stack.count)
                 diskStack.count += amountAdded
-                insertedStack.count -= amountAdded
+                stack.count -= amountAdded
 
                 // done adding.
-                if (insertedStack.isEmpty) return
+                if (stack.isEmpty) return
                 // We assume once we have found the item no more instance of it exist in the disk (see ensureItemsAreGroupedTogether)
                 break
             }
         }
     }
 
-    override fun insertIntoEmptySlots(insertedStack: ItemStack) {
+    override fun insertIntoEmptySlots(stack: ItemStack) {
         val inventory = getInventory()
 
         // We don't insert multiple stacks of the same item.
         // This "return" will go into effect when we've tried to insert into the stack with insertIntoExistingStacks
         // but there wasn't enough space.
         // In this case, we can't just insert the same item into a new stack because every stack represents a DIFFERENT item.
-        if (inventory.any { it.equalsIgnoreCount(insertedStack) }) return
+        if (inventory.any { it.equalsIgnoreCount(stack) }) return
 
         for (i in inventory.indices) {
             val diskStack = inventory[i]
             if (diskStack.isEmpty) {
-                val amountAdded = Integer.min(disk.perItemCapacity, insertedStack.count)
-                inventory[i] = insertedStack.copy(count = amountAdded)
-                insertedStack.count -= amountAdded
+                val amountAdded = Integer.min(disk!!.perItemCapacity, stack.count)
+                inventory[i] = stack.copy(count = amountAdded)
+                stack.count -= amountAdded
                 // done adding
-                if (insertedStack.isEmpty) return
+                if (stack.isEmpty) return
             }
 
         }
@@ -176,3 +174,4 @@ data class InventoryComponentImpl(
 
 
 
+//class DiskStackProvider(private val diskGetter : () -> DiskStack) : ItemHolder by diskGetter()

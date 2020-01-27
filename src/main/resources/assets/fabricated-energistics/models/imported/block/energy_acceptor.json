@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "fabricated-energistics:block/energy_acceptor"
+        "all": "fabricated-energistics:block/energy/energy_acceptor"
     }
 }

@@ -1,29 +1,34 @@
 package fe.block
 
 //import fe.block.CableBlock.Companion.Connection.*
+import alexiil.mc.lib.multipart.api.MultipartContainer
+import alexiil.mc.lib.multipart.api.NativeMultipart
+import fabricktx.api.*
 import fe.blockentity.CableBlockEntity
 import fe.client.model.*
 import fe.network.NetworkBlock
-import fe.util.BlockStateUpdate
-import fe.util.BlockWithBlockEntity
-import fe.util.buildList
-import fe.util.plus
+import fe.part.CablePart
 import net.minecraft.block.Block
-import net.minecraft.block.BlockRenderLayer
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
 import net.minecraft.entity.EntityContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.state.StateFactory
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
+import net.minecraft.state.StateManager
 
-sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Material.GLASS), ::CableBlockEntity), NetworkBlock/*,
-    NativeMultipart*/ {
+//TODO: expand to other cable types
+
+val CoveredCableBlocks = BlockList(CableBlock.Color.values().map { CoveredCableBlock(it) })
+
+val AllCableBlocks = CoveredCableBlocks
+
+sealed class CableBlock(val color: Color) : NetworkBlock<CableBlockEntity>(Settings.of(Material.GLASS), ::CableBlockEntity),
+    NativeMultipart {
 
 
     companion object {
@@ -37,10 +42,11 @@ sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Mat
 
             val All = listOf(Down, Up, North, South, East, West)
         }
+
     }
 
     init {
-        var default = stateFactory.defaultState
+        var default = stateManager.defaultState
         for (connection in Connection.All) {
             default = default.with(connection, false)
         }
@@ -98,11 +104,9 @@ sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Mat
         Yellow("yellow")
     }
 
-    override fun getRenderLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
 
-
-    override fun appendProperties(builder: StateFactory.Builder<Block, BlockState>) {
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         builder.add(*Connection.All.toTypedArray())
     }
 
@@ -118,7 +122,7 @@ sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Mat
         var newState = defaultState
         for ((sidePos, sideConnection) in sides) {
             val blockState = world.getBlockState(sidePos)
-            val connected = !blockState.isAir && blockState.block is NetworkBlock
+            val connected = !blockState.isAir && blockState.block is NetworkBlock<*>
             newState = newState.with(sideConnection, connected)
         }
 
@@ -132,6 +136,7 @@ sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Mat
         placer: LivingEntity?,
         itemStack: ItemStack
     ) {
+        super.onPlaced(world, pos, state, placer, itemStack)
         world.updateSides(pos)
     }
 
@@ -145,14 +150,16 @@ sealed class CableBlock(val color: Color) : BlockWithBlockEntity(Settings.of(Mat
     ) {
         world.updateSides(pos)
     }
+
+    override fun getMultipartConversion(
+        world: World?,
+        pos: BlockPos?,
+        state: BlockState?
+    ): List<MultipartContainer.MultipartCreator> =
+        listOf(MultipartContainer.MultipartCreator { CablePart(CablePart.Definition, it) })
+
 }
-
 class CoveredCableBlock(color: Color) : CableBlock(color) {
-    companion object {
-        val All = Color.values().map { CoveredCableBlock(it) }
-    }
-
-    lateinit var x: String
 
 
 //    override fun getRayTraceShape(state: BlockState?, view: BlockView?, pos: BlockPos?): VoxelShape {

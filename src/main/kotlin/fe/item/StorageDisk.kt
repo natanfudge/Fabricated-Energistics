@@ -34,7 +34,7 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
         )
     }
 
-    private val totalMaxStackAmount : Int = differentItemsCapacity * perItemCapacity
+    private val totalMaxStackAmount: Int = differentItemsCapacity * perItemCapacity
 
     override fun appendTooltip(
         stack: ItemStack,
@@ -42,7 +42,7 @@ class StorageDisk(val differentItemsCapacity: Int, val perItemCapacity: Int) :
         tooltip: MutableList<Text>,
         context: TooltipContext
     ) {
-        val inventory = DiskStack(stack).listContents()
+        val inventory = DiskStack { stack }.listContents()
         tooltip.add(
             LiteralText("${inventory.sumBy { it.count }} ")
                 .append(TranslatableText("gui.fabricated-energistics.Of"))

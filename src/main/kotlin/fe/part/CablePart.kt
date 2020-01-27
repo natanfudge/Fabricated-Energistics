@@ -11,22 +11,28 @@ import alexiil.mc.lib.net.IMsgReadCtx
 import alexiil.mc.lib.net.IMsgWriteCtx
 import alexiil.mc.lib.net.NetByteBuf
 import fe.block.CoveredCableBlock
-import fe.client.model.part.TankPartModelKey
+import fe.block.CoveredCableBlocks
+import fe.client.model.CableShapes
 import fe.modId
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 
+object CablePartModelKey : PartModelKey() {
+    override fun equals(other: Any?): Boolean = this === other
+
+    override fun hashCode(): Int = System.identityHashCode(this)
+}
+
 class CablePart(definition: PartDefinition?, holder: MultipartHolder?) : AbstractPart(definition, holder) {
     companion object {
-        //        var NET_TANK: ParentNetIdSingle<PartTank> = NET_ID.subType(PartTank::class.java, "simple_pipes:tank")
-        val Shape: VoxelShape = VoxelShapes.cuboid(2 / 16.0, 0.0, 2 / 16.0, 14 / 16.0, 12 / 16.0, 14 / 16.0)
 
-        val Definition = PartDefinition(modId("tank"),
+        val Definition = PartDefinition(modId("cable"),
             PartDefinition.IPartNbtReader { definition, holder, tag ->
                 CablePart(definition, holder, tag)
             },
@@ -55,10 +61,11 @@ class CablePart(definition: PartDefinition?, holder: MultipartHolder?) : Abstrac
     }
 
     override fun getShape(): VoxelShape {
-        return Shape
+        //TODO: generalize
+        return CableShapes.Covered.Core
     }
 
-    override fun getModelKey(): PartModelKey? = TankPartModelKey
+    override fun getModelKey(): PartModelKey = CablePartModelKey
 
     override fun addAllAttributes(list: AttributeList<*>?) {
         super.addAllAttributes(list)
@@ -71,22 +78,22 @@ class CablePart(definition: PartDefinition?, holder: MultipartHolder?) : Abstrac
 
     override fun getPickStack(): ItemStack {
         //TODO: generalize for all cables
-        return ItemStack(CoveredCableBlock.All.first())
+        return ItemStack(CoveredCableBlocks.first())
     }
 
     protected fun onTick() {
         isPlayerInteracting = false
     }
 
-    override fun onActivate(player: PlayerEntity, hand: Hand, hit: BlockHitResult): Boolean {
+    override fun onUse(player: PlayerEntity, hand: Hand, hit: BlockHitResult): ActionResult {
         if (player.getStackInHand(hand).isEmpty) {
-            return true
+            return ActionResult.SUCCESS
         }
         if (player.world.isClient) {
-            return true
+            return ActionResult.SUCCESS
         }
         isPlayerInteracting = true
-        return false
+        return ActionResult.FAIL
     }
 
     override fun onRemoved() {

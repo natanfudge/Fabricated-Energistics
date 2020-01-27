@@ -19,15 +19,15 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "fe.FabricatedEnergisticsKt::init"
+      "fe.FabricatedEnergisticsInit"
     ],
     "client": [
-      "fe.FabricatedEnergisticsKt::initClient"
+      "fe.FabricatedEnergisticsClientInit"
     ]
   },
   "depends": {
     "fabricloader": ">=0.4.0",
     "fabric-language-kotlin": "*",
-    "minecraft": "1.14.x"
+    "minecraft": "1.15.x"
   }
 }

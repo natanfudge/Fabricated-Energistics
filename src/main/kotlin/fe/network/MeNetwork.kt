@@ -22,7 +22,8 @@ class MeNetwork {
     }
 
     private val itemHolders = mutableListOf<ItemHolder>()
-    val isActive: Boolean = false
+    var isPowered : Boolean = false
+    val isActive: Boolean get() = isPowered
     fun allStoredItems(): List<ItemStack> = itemHolders.flatMap { it.listContents() }
 
     fun contributeItemHolder(itemHolder: ItemHolder) {
